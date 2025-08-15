@@ -1,0 +1,142 @@
+[
+    {
+        "merged": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-debug-39:\\drawable_selector_home.xml.flat",
+        "source": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-main-41:\\drawable\\selector_home.xml"
+    },
+    {
+        "merged": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-debug-39:\\mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-main-41:\\mipmap-xhdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-debug-39:\\mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-main-41:\\mipmap-xxhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.example.calbon.app-debug-39:/layout_activity_splash.xml.flat",
+        "source": "com.example.calbon.app-main-41:/layout/activity_splash.xml"
+    },
+    {
+        "merged": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-debug-39:\\drawable_selector_perfil.xml.flat",
+        "source": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-main-41:\\drawable\\selector_perfil.xml"
+    },
+    {
+        "merged": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-debug-39:\\layout_fragment_perfil.xml.flat",
+        "source": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-main-41:\\layout\\fragment_perfil.xml"
+    },
+    {
+        "merged": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-debug-39:\\mipmap-anydpi_ic_launcher.xml.flat",
+        "source": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-main-41:\\mipmap-anydpi\\ic_launcher.xml"
+    },
+    {
+        "merged": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-debug-39:\\xml_backup_rules.xml.flat",
+        "source": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-main-41:\\xml\\backup_rules.xml"
+    },
+    {
+        "merged": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-debug-39:\\drawable_formulario_cinza.png.flat",
+        "source": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-main-41:\\drawable\\formulario_cinza.png"
+    },
+    {
+        "merged": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-debug-39:\\drawable_perfil_cinza.png.flat",
+        "source": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-main-41:\\drawable\\perfil_cinza.png"
+    },
+    {
+        "merged": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-debug-39:\\mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-main-41:\\mipmap-hdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-debug-39:\\mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-main-41:\\mipmap-xxhdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-debug-39:\\drawable_selector_formulario.xml.flat",
+        "source": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-main-41:\\drawable\\selector_formulario.xml"
+    },
+    {
+        "merged": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-debug-39:\\drawable_ic_launcher_foreground.xml.flat",
+        "source": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-main-41:\\drawable\\ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-debug-39:\\drawable_ic_launcher_background.xml.flat",
+        "source": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-main-41:\\drawable\\ic_launcher_background.xml"
+    },
+    {
+        "merged": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-debug-39:\\layout_fragment_relatorio.xml.flat",
+        "source": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-main-41:\\layout\\fragment_relatorio.xml"
+    },
+    {
+        "merged": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-debug-39:\\mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-main-41:\\mipmap-xxxhdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-debug-39:\\mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-main-41:\\mipmap-xxxhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-debug-39:\\layout_activity_splash.xml.flat",
+        "source": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-main-41:\\layout\\activity_splash.xml"
+    },
+    {
+        "merged": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-debug-39:\\layout_fragment_home.xml.flat",
+        "source": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-main-41:\\layout\\fragment_home.xml"
+    },
+    {
+        "merged": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-debug-39:\\drawable_home_cinza.png.flat",
+        "source": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-main-41:\\drawable\\home_cinza.png"
+    },
+    {
+        "merged": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-debug-39:\\drawable_bg_bottom_nav_curved.xml.flat",
+        "source": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-main-41:\\drawable\\bg_bottom_nav_curved.xml"
+    },
+    {
+        "merged": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-debug-39:\\xml_data_extraction_rules.xml.flat",
+        "source": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-main-41:\\xml\\data_extraction_rules.xml"
+    },
+    {
+        "merged": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-debug-39:\\mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-main-41:\\mipmap-mdpi\\ic_launcher.webp"
+    },
+    {
+        "merged": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-debug-39:\\drawable_relatorio_cinza.png.flat",
+        "source": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-main-41:\\drawable\\relatorio_cinza.png"
+    },
+    {
+        "merged": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-debug-39:\\color_bottom_nav_item_selector.xml.flat",
+        "source": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-main-41:\\color\\bottom_nav_item_selector.xml"
+    },
+    {
+        "merged": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-debug-39:\\mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-main-41:\\mipmap-xhdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-debug-39:\\mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-main-41:\\mipmap-mdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-debug-39:\\drawable_selector_relatorio.xml.flat",
+        "source": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-main-41:\\drawable\\selector_relatorio.xml"
+    },
+    {
+        "merged": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-debug-39:\\layout_activity_main.xml.flat",
+        "source": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-main-41:\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-debug-39:\\raw_splash.mp4.flat",
+        "source": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-main-41:\\raw\\splash.mp4"
+    },
+    {
+        "merged": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-debug-39:\\mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-main-41:\\mipmap-hdpi\\ic_launcher_round.webp"
+    },
+    {
+        "merged": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-debug-39:\\layout_fragment_formulario.xml.flat",
+        "source": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-main-41:\\layout\\fragment_formulario.xml"
+    },
+    {
+        "merged": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-debug-39:\\mipmap-anydpi_ic_launcher_round.xml.flat",
+        "source": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-main-41:\\mipmap-anydpi\\ic_launcher_round.xml"
+    },
+    {
+        "merged": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-debug-39:\\menu_bottom_nav_menu.xml.flat",
+        "source": "C:\\Users\\joycesantana-ieg\\.gradle\\daemon\\8.10.2\\com.example.calbon.app-main-41:\\menu\\bottom_nav_menu.xml"
+    }
+]
