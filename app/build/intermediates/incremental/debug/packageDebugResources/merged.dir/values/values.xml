@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#000000</color>
+    <color name="bottom_bar_background">#212121</color>
+    <color name="bottom_nav_icon_unselected">#757575</color>
+    <color name="calbon_black">#212121</color>
+    <color name="calbon_cyan">#00BCD4</color>
+    <color name="calbon_gray">#B0B0B0</color>
+    <color name="fab_color">#00BCD4</color>
+    <color name="teal_200">#0CACBF</color>
+    <color name="white">#FFFFFF</color>
+    <string name="app_name">Calbon</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <style name="Theme.Calbon" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:colorBackground">@color/calbon_black</item>
+
+        <item name="colorPrimary">@color/calbon_cyan</item>
+        <item name="colorOnPrimary">@color/calbon_black</item>
+
+        <item name="colorSecondary">@color/calbon_cyan</item>
+        <item name="colorOnSecondary">@color/calbon_black</item>
+
+        <item name="android:textColorPrimary">@color/calbon_cyan</item>
+        <item name="android:textColorSecondary">@color/calbon_gray</item>
+
+        <item name="android:statusBarColor">@color/calbon_black</item>
+        <item name="android:navigationBarColor">@color/calbon_black</item>
+
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+</resources>

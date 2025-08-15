@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Calbon" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:colorBackground">@color/calbon_black</item>
+
+        <item name="colorPrimary">@color/calbon_cyan</item>
+        <item name="colorOnPrimary">@color/calbon_black</item>
+
+        <item name="colorSecondary">@color/calbon_cyan</item>
+        <item name="colorOnSecondary">@color/calbon_black</item>
+
+        <item name="android:textColorPrimary">@color/calbon_cyan</item>
+        <item name="android:textColorSecondary">@color/calbon_gray</item>
+
+        <item name="android:statusBarColor">@color/calbon_black</item>
+        <item name="android:navigationBarColor">@color/calbon_black</item>
+
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+</resources>
