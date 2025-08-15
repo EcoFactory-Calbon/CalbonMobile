@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Cores principais do app -->
+    <color name="calbon_black">#212121</color>
+    <color name="calbon_cyan">#00BCD4</color>
+    <color name="calbon_gray">#B0B0B0</color>
+
+    <!-- Cores usadas pelo Material -->
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="teal_200">#0CACBF</color>
+
+    <!-- Cores para Bottom Navigation -->
+    <color name="bottom_nav_icon_unselected">#757575</color>
+    <color name="fab_color">#00BCD4</color>
+    <color name="bottom_bar_background">#212121</color>
+</resources>
