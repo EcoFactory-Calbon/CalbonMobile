@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -6,28 +5,33 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <!-- Container para fragments -->
     <FrameLayout
         android:id="@+id/frame_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/bottom_navigation" />
+        android:layout_above="@id/bottomNavigationView"/>
 
-    <com.example.calbon.CurvedBottomNavigationView
-        android:id="@+id/bottom_navigation"
+    <!-- Bottom Navigation -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:elevation="6dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
         app:menu="@menu/bottom_nav_menu"
-        app:labelVisibilityMode="unlabeled"
-        app:itemIconTint="@color/bottom_nav_item_selector" />
+        app:itemIconTint="@null"
+        app:labelVisibilityMode="unlabeled"/>
 
+    <!-- Floating Action Button centralizado -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/bottom_navigation"
-        android:layout_marginBottom="-50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="36dp"
         android:backgroundTint="@color/teal_200"
         android:src="@drawable/formulario_cinza"
         app:tint="@color/black"

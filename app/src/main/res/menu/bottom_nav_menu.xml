@@ -19,5 +19,4 @@
         android:id="@+id/perfil"
         android:title="Perfil"
         android:icon="@drawable/selector_perfil" />
-
 </menu>
