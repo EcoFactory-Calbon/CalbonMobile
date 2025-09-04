@@ -13,19 +13,25 @@
         android:theme="@style/Theme.Calbon"
         tools:targetApi="31">
         <activity
-            android:name=".Primeiro_acesso"
+            android:name=".DefinirSenha"
             android:exported="false" />
         <activity
-            android:name=".PrimeiraTela"
+            android:name=".Home"
+            android:exported="false" />
+        <activity
+            android:name=".Primeiro_acesso"
             android:exported="false" />
         <activity
             android:name=".Login"
             android:exported="false" />
         <activity
+            android:name=".Splash"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".Splash"
+            android:name=".PrimeiraTela"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

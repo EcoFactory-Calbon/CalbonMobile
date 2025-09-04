@@ -1,8 +1,12 @@
 package com.example.calbon
 
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -20,9 +24,28 @@ class Login : AppCompatActivity() {
             insets
         }
 
-        val input = findViewById<TextInputLayout>(R.id.textInput)
+        val input = findViewById<TextInputLayout>(R.id.InputEmail)
+        val voltar = findViewById<ImageView>(R.id.voltar)
+        val continuar = findViewById<Button>(R.id.continuar)
+        val primeiroAcesso = findViewById<TextView>(R.id.primeiroAcesso)
+
         input.defaultHintTextColor = ColorStateList.valueOf(Color.WHITE)
 
-        
+        voltar.setOnClickListener{
+            finish()
+        }
+        continuar.setOnClickListener{
+            val intent = Intent(this, MainActivity::class.java)
+            intent.putExtra("fragmentToLoad", "HomeFragment")
+            startActivity(intent)
+            finish()
+        }
+
+        primeiroAcesso.setOnClickListener{
+            val intent = Intent(this, Primeiro_acesso::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
+
 }

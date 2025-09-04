@@ -7,7 +7,7 @@
 
     <!-- Container para fragments -->
     <FrameLayout
-        android:id="@+id/frame_container"
+        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/bottomNavigationView"/>
@@ -38,5 +38,8 @@
         app:fabCustomSize="56dp"
         app:maxImageSize="32dp"
         app:elevation="8dp" />
+
+
+
 
 </RelativeLayout>

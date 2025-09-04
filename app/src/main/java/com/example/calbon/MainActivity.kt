@@ -1,7 +1,6 @@
 package com.example.calbon
 
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -27,10 +26,17 @@ class MainActivity : AppCompatActivity() {
         // Inicializa a navegação
         setupNavigation()
 
-        // Fragment inicial
+        // Fragment inicial - lógica otimizada
         if (savedInstanceState == null) {
-            replaceFragment(HomeFragment())
-            bottomNavigation.selectedItemId = R.id.home
+            // Verifica se veio da tela de login com extra específico
+            if (intent.getStringExtra("fragmentToLoad") == "HomeFragment") {
+                replaceFragment(HomeFragment())
+                bottomNavigation.selectedItemId = R.id.home
+            } else {
+                // Carregamento normal
+                replaceFragment(HomeFragment())
+                bottomNavigation.selectedItemId = R.id.home
+            }
         }
     }
 
@@ -51,8 +57,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun replaceFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.frame_container, fragment)
+            .replace(R.id.fragment_container, fragment)
             .commit()
     }
-
-   }
+}
