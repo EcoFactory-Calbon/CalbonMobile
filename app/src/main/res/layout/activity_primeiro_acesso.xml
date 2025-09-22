@@ -29,6 +29,17 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/escrita_logo" />
 
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Insira suas informações:"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.081"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logo" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/InputEmail"
         android:layout_width="369dp"
@@ -118,7 +129,7 @@
         app:layout_constraintTop_toBottomOf="@+id/continuar" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"

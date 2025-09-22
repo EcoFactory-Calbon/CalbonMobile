@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -26,13 +27,19 @@ class Primeiro_acesso : AppCompatActivity() {
         val numCracha = findViewById<TextInputLayout>(R.id.InputNumCracha)
         val codigoEmpresa = findViewById<TextInputLayout>(R.id.InputCódigoEmpresa)
         val continuar = findViewById<Button>(R.id.continuar)
-
+        val login =  findViewById<TextView>(R.id.login)
         voltar.setOnClickListener{
             finish()
         }
 
         continuar.setOnClickListener{
             val intent = Intent(this, DefinirSenha::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+        login.setOnClickListener{
+            val intent = Intent(this, Login::class.java)
             startActivity(intent)
             finish()
         }

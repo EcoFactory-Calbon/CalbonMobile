@@ -30,7 +30,6 @@ class PrimeiraTela : AppCompatActivity() {
         binding.buttonPrimeiroAcesso.setOnClickListener {
             val intent = Intent(this, Primeiro_acesso::class.java)
             startActivity(intent)
-            finish()
         }
 
 

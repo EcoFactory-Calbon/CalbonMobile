@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Login">
+    tools:context=".Redefinir_senha">
 
     <ImageView
         android:id="@+id/voltar"
@@ -34,21 +34,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Insira suas informações:"
+        android:text="Insira uma das duas informações:"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.081"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logo" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/InputEmail"
+        android:id="@+id/InputEmailRedefinirSenha"
         android:layout_width="369dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="54dp"
+        android:layout_marginTop="74dp"
         android:layout_marginEnd="1dp"
         android:background="@drawable/border"
-        android:hint="Email"
+        android:hint="E-mail"
         app:boxStrokeColor="@color/white"
         app:hintTextColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
@@ -62,20 +62,30 @@
             android:textColor="@color/white" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <ImageView
+        android:id="@+id/linha_ou"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/InputEmailRedefinirSenha"
+        app:srcCompat="@drawable/linha_ou" />
+
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/InputSenha"
+        android:id="@+id/InputSmsRedefinirSenha"
         android:layout_width="369dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="14dp"
         android:layout_marginEnd="1dp"
         android:background="@drawable/border"
-        android:hint="Senha"
+        android:hint="SMS"
         app:boxStrokeColor="@color/white"
         app:hintTextColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/InputEmail">
+        app:layout_constraintTop_toBottomOf="@+id/linha_ou">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -88,44 +98,22 @@
         android:id="@+id/continuar"
         android:layout_width="230dp"
         android:layout_height="59dp"
-        android:layout_marginTop="65dp"
+        android:layout_marginTop="45dp"
         android:text="Continuar"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/InputSenha" />
+        app:layout_constraintTop_toBottomOf="@+id/InputSmsRedefinirSenha" />
 
     <TextView
-        android:id="@+id/esqueciSenha"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="Esqueci minha senha"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/InputSenha" />
-
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Primeira vez no Calbon?"
+        android:id="@+id/textView3"
+        android:layout_width="272dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="44dp"
+        android:text="Insira somente uma das duas informações acima para que possamos enviar um código de verificação no seu contato"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/continuar" />
-
-    <TextView
-        android:id="@+id/primeiroAcesso"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Primeiro Acesso"
-        android:textColor="@color/teal_200"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

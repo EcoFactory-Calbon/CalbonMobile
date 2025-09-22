@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "381898627890",
+    "project_id": "redefinir-senha-23797",
+    "storage_bucket": "redefinir-senha-23797.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:381898627890:android:8f549073bd59868b83552b",
+        "android_client_info": {
+          "package_name": "com.example.calbon"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAciWHak0z4dCI7PEg_4BUq4ilnHt1qUYk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
