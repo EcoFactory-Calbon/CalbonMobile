@@ -51,8 +51,7 @@ class Redefinir_senha : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-
-
+            // validação do email
 
 
             // Usando o Firebase para enviar o e-mail de redefinição
