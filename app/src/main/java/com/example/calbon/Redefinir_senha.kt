@@ -51,6 +51,10 @@ class Redefinir_senha : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+
+
+
+
             // Usando o Firebase para enviar o e-mail de redefinição
             auth.sendPasswordResetEmail(email)
                 .addOnCompleteListener { task ->
