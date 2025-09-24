@@ -3,6 +3,7 @@ package com.example.calbon
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -28,16 +29,25 @@ class Redefinir_senha : AppCompatActivity() {
             insets
         }
 
-
         val continuar = findViewById<Button>(R.id.continuar)
-        val InputEmailRedefinirSenha = findViewById<TextInputLayout>(R.id.InputEmailRedefinirSenha)
+        val InputEmailRedefinirSenha =
+            findViewById<TextInputLayout>(R.id.InputEmailRedefinirSenha)
+        val voltar = findViewById<ImageView>(R.id.voltarRedefinirSenha)
 
+        voltar.setOnClickListener {
+            val intent = Intent(this, Login::class.java)
+            startActivity(intent)
+        }
         continuar.setOnClickListener {
             val email = InputEmailRedefinirSenha.editText?.text.toString().trim()
 
             // Validação de preenchimento
             if (email.isEmpty()) {
-                Toast.makeText(this, "Informe o e-mail para redefinir a senha", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    "Informe o e-mail para redefinir a senha",
+                    Toast.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
             }
 
@@ -46,14 +56,22 @@ class Redefinir_senha : AppCompatActivity() {
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         // Se o e-mail foi enviado com sucesso
-                        Toast.makeText(this, "E-mail de recuperação enviado! Verifique sua caixa de entrada.", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            this,
+                            "E-mail de recuperação enviado! Verifique sua caixa de entrada.",
+                            Toast.LENGTH_LONG
+                        ).show()
 
                         // Navegar para outra tela após o envio
                         val intent = Intent(this, Login::class.java)
                         startActivity(intent)
                     } else {
                         // Se houve um erro no envio
-                        Toast.makeText(this, "Erro ao enviar e-mail. Verifique o endereço e tente novamente.", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            this,
+                            "Erro ao enviar e-mail. Verifique o endereço e tente novamente.",
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                 }
         }

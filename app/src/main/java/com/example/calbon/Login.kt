@@ -4,15 +4,11 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
-import android.text.SpannableString
-import android.text.Spanned
-import android.text.style.ForegroundColorSpan
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.textfield.TextInputLayout
@@ -30,7 +26,7 @@ class Login : AppCompatActivity() {
         }
 
         val input = findViewById<TextInputLayout>(R.id.InputEmail)
-        val voltar = findViewById<ImageView>(R.id.voltar)
+        val voltar = findViewById<ImageView>(R.id.voltarRedefinirSenha)
         val continuar = findViewById<Button>(R.id.continuar)
         val primeiroAcesso = findViewById<TextView>(R.id.primeiroAcesso)
         val redefinirSenha = findViewById<TextView>(R.id.esqueciSenha)
