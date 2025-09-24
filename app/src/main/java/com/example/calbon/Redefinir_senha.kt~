@@ -2,50 +2,76 @@ package com.example.calbon
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 
 class Redefinir_senha : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
-
+        setContentView(R.layout.activity_redefinir_senha)
 
         auth = FirebaseAuth.getInstance()
 
-        // Ajuste dos insets (barra de status/navegação)
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        // Clique no botão continuar
-        binding.continuar.setOnClickListener {
-            val email = binding.InputEmailRedefinirSenha.editText?.text.toString().trim()
+        val continuar = findViewById<Button>(R.id.continuar)
+        val InputEmailRedefinirSenha =
+            findViewById<TextInputLayout>(R.id.InputEmailRedefinirSenha)
+        val voltar = findViewById<ImageView>(R.id.voltarRedefinirSenha)
 
+        voltar.setOnClickListener {
+            val intent = Intent(this, Login::class.java)
+            startActivity(intent)
+        }
+        continuar.setOnClickListener {
+            val email = InputEmailRedefinirSenha.editText?.text.toString().trim()
+
+            // Validação de preenchimento
             if (email.isEmpty()) {
-                Toast.makeText(this, "Informe o e-mail para redefinir a senha", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    "Informe o e-mail para redefinir a senha",
+                    Toast.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
             }
 
+            // Usando o Firebase para enviar o e-mail de redefinição
             auth.sendPasswordResetEmail(email)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        Toast.makeText(this, "E-mail de recuperação enviado! Verifique sua caixa de entrada.", Toast.LENGTH_LONG).show()
-                        startActivity(Intent(this, Login::class.java))
-                        finish() // opcional, fecha a tela atual
+                        // Se o e-mail foi enviado com sucesso
+                        Toast.makeText(
+                            this,
+                            "E-mail de recuperação enviado! Verifique sua caixa de entrada.",
+                            Toast.LENGTH_LONG
+                        ).show()
+
+                        // Navegar para outra tela após o envio
+                        val intent = Intent(this, Login::class.java)
+                        startActivity(intent)
                     } else {
-                        Toast.makeText(this, "Erro ao enviar e-mail. Verifique o endereço e tente novamente.", Toast.LENGTH_LONG).show()
+                        // Se houve um erro no envio
+                        Toast.makeText(
+                            this,
+                            "Erro ao enviar e-mail. Verifique o endereço e tente novamente.",
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                 }
         }
