@@ -35,8 +35,7 @@ class Redefinir_senha : AppCompatActivity() {
         val voltar = findViewById<ImageView>(R.id.voltarRedefinirSenha)
 
         voltar.setOnClickListener {
-            val intent = Intent(this, Login::class.java)
-            startActivity(intent)
+            finish()
         }
         continuar.setOnClickListener {
             val email = InputEmailRedefinirSenha.editText?.text.toString().trim()
@@ -66,8 +65,7 @@ class Redefinir_senha : AppCompatActivity() {
                         ).show()
 
                         // Navegar para outra tela após o envio
-                        val intent = Intent(this, Login::class.java)
-                        startActivity(intent)
+                        finish()
                     } else {
                         // Se houve um erro no envio
                         Toast.makeText(
