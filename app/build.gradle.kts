@@ -8,6 +8,10 @@ android {
     namespace = "com.example.calbon"
     compileSdk = 35
 
+    lint {
+        abortOnError = false
+    }
+
     defaultConfig {
         applicationId = "com.example.calbon"
         minSdk = 29
@@ -59,6 +63,6 @@ dependencies {
     implementation("com.google.firebase:firebase-auth:24.0.1")
     implementation("com.google.android.gms:play-services-auth:21.0.0")
     implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
-
-
+    implementation ("com.google.android.material:material:1.x.x")
+    implementation ("androidx.viewpager2:viewpager2:1.0.0")
 }
