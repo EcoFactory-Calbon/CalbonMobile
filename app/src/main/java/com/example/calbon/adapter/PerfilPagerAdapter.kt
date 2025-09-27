@@ -1,6 +1,6 @@
 package com.example.calbon.adapter
 
-import PostSalvoFragment
+import com.example.calbon.PostSalvoFragment
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.calbon.ConfiguracaoFragment

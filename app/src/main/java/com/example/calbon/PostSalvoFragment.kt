@@ -1,14 +1,19 @@
+package com.example.calbon
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContentProviderCompat.requireContext
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.calbon.R
 import com.example.calbon.adapter.LinksAdapter
-import com.example.calbon.model.LinkItem
+import com.example.calbon.api.RetrofitClient
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class PostSalvoFragment : Fragment() {
 
@@ -18,9 +23,7 @@ class PostSalvoFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_post_salvo, container, false)
-    }
+    ): View? = inflater.inflate(R.layout.fragment_post_salvo, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -34,13 +37,17 @@ class PostSalvoFragment : Fragment() {
     }
 
     private fun fetchLinks() {
-        val links = listOf(
-            LinkItem(1, "Globo", "https://www.globo.com"),
-            LinkItem(2, "G1 Notícias", "https://g1.globo.com"),
-            LinkItem(3, "BBC News Brasil", "https://www.bbc.com/portuguese"),
-            LinkItem(4, "CNN Brasil", "https://www.cnnbrasil.com.br")
-
-        )
-        adapter.setItems(links)
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val links = RetrofitClient.instance.getLinks()
+                withContext(Dispatchers.Main) {
+                    adapter.setItems(links)
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(requireContext(), "Erro ao carregar links", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 }
