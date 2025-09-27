@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.calbon.adapter.LinksAdapter
 import com.example.calbon.api.RetrofitClient
+import com.example.calbon.model.LinkItem
+import com.example.calbon.util.SavedPostsManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -28,20 +30,28 @@ class PostSalvoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerView = view.findViewById(R.id.CardsRecycleView)
+        recyclerView = view.findViewById(R.id.CardsRecycleViewHome)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        adapter = LinksAdapter()
+
+        adapter = LinksAdapter { item ->
+            // atualiza visual do item clicado
+            val position = (0 until adapter.itemCount).firstOrNull { adapter.getItem(it).id == item.id }
+            position?.let { adapter.notifyItemChanged(it) }
+        }
+
         recyclerView.adapter = adapter
 
-        fetchLinks()
+        fetchSalvos()
     }
 
-    private fun fetchLinks() {
+    private fun fetchSalvos() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val links = RetrofitClient.instance.getLinks()
+                val allLinks = RetrofitClient.instance.getLinks() // ou lista local
+                val savedLinks = allLinks.filter { SavedPostsManager.isPostSaved(requireContext(), it.id.toString()) }
+
                 withContext(Dispatchers.Main) {
-                    adapter.setItems(links)
+                    adapter.setItems(savedLinks)
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
@@ -49,5 +59,11 @@ class PostSalvoFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun filterSalvos() {
+        val currentLinks = adapter.run { (0 until itemCount).map { getItem(it) } }
+        val filtered = currentLinks.filter { SavedPostsManager.isPostSaved(requireContext(), it.id.toString()) }
+        adapter.setItems(filtered)
     }
 }
