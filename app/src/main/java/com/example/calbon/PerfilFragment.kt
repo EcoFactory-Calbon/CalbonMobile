@@ -1,5 +1,6 @@
 package com.example.calbon
 
+import UserItem
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,13 +10,10 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.calbon.adapter.PerfilPagerAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+import android.widget.TextView
 
 class PerfilFragment : Fragment() {
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -23,16 +21,30 @@ class PerfilFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_perfil, container, false)
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val viewPager: ViewPager2 = view.findViewById(R.id.view_pager)
         val tabLayout: TabLayout = view.findViewById(R.id.tab_layout)
+        val nome = view.findViewById<TextView>(R.id.nomeUsuario)
+        val email = view.findViewById<TextView>(R.id.emailUsuario)
 
         // Adapter do ViewPager2
         val adapter = PerfilPagerAdapter(this)
         viewPager.adapter = adapter
+
+        // Recuperando dados do usuário via Bundle
+        val nomeUsuario = arguments?.getString("nome_completo")
+        val emailUsuario = arguments?.getString("email")
+
+        nome.text = nomeUsuario ?: "Nome não disponível"
+        email.text = emailUsuario ?: "Email não disponível"
+
+        val user = arguments?.getParcelable<UserItem>("user")
+        user?.let {
+            nome.text = it.nome_completo
+            email.text = it.email
+        }
 
         // Ligando TabLayout e ViewPager2
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
