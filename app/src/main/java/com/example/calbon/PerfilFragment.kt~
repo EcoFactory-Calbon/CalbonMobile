@@ -1,0 +1,58 @@
+package com.example.calbon
+
+import UserItem
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.viewpager2.widget.ViewPager2
+import com.example.calbon.adapter.PerfilPagerAdapter
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
+import android.widget.TextView
+
+class PerfilFragment : Fragment() {
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_perfil, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val viewPager: ViewPager2 = view.findViewById(R.id.view_pager)
+        val tabLayout: TabLayout = view.findViewById(R.id.tab_layout)
+        val nome = view.findViewById<TextView>(R.id.nomeUsuario)
+        val email = view.findViewById<TextView>(R.id.emailUsuario)
+
+        // Adapter do ViewPager2
+        val adapter = PerfilPagerAdapter(this)
+        viewPager.adapter = adapter
+
+        // Recuperando dados do usuário via Bundle
+        val nomeUsuario = arguments?.getString("nome_completo")
+        val emailUsuario = arguments?.getString("email")
+
+        nome.text = nomeUsuario ?: "Nome não disponível"
+        email.text = emailUsuario ?: "Email não disponível"
+        
+        val user = arguments?.getParcelable<UserItem>("user")
+        user?.let {
+            nome.text = it.nome_completo
+            email.text = it.email
+        }
+
+        // Ligando TabLayout e ViewPager2
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            tab.text = when(position) {
+                0 -> "Posts salvos"
+                1 -> "Configurações"
+                else -> ""
+            }
+        }.attach()
+    }
+}
