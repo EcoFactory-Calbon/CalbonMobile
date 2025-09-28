@@ -50,6 +50,7 @@ class DefinirSenha : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+
             // Criar usuário no Firebase
             auth.createUserWithEmailAndPassword(emailRecebido, senhaDigitada)
                 .addOnCompleteListener(this) { task ->
