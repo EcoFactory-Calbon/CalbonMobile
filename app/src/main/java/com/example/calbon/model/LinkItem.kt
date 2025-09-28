@@ -6,7 +6,8 @@ data class LinkItem(
     val id: Int,
     @SerializedName("titulo") val title: String,
     val url: String,
-    @SerializedName("imagem") val img: String
+    @SerializedName("imagem") val img: String,
+    var salvo: Boolean = false
 )
 
 

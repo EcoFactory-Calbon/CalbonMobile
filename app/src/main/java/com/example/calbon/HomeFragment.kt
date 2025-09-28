@@ -1,19 +1,63 @@
 package com.example.calbon
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.calbon.adapter.LinksAdapter
+import com.example.calbon.api.RetrofitClient
+import com.example.calbon.model.LinkItem
+import com.example.calbon.util.SavedPostsManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class HomeFragment : Fragment() {
+
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: LinksAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+    ): View? = inflater.inflate(R.layout.fragment_home, container, false)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        recyclerView = view.findViewById(R.id.CardsRecycleViewHome)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        // Passa callback no construtor
+        adapter = LinksAdapter { item ->
+            // Atualiza o item clicado na lista
+            val position = (0 until adapter.itemCount).firstOrNull { adapter.getItem(it).id == item.id }
+            position?.let { adapter.notifyItemChanged(it) }
+        }
+
+        recyclerView.adapter = adapter
+
+        fetchLinks()
+    }
+
+    private fun fetchLinks() {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val links: List<LinkItem> = RetrofitClient.instance.getLinks()
+                withContext(Dispatchers.Main) {
+                    adapter.setItems(links)
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(requireContext(), "Erro ao carregar links", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 }
