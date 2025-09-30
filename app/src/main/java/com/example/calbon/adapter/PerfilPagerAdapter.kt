@@ -12,6 +12,7 @@ class PerfilPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
         ConfiguracaoFragment()
     )
 
+
     override fun getItemCount(): Int = fragments.size
     override fun createFragment(position: Int): Fragment = fragments[position]
 }
