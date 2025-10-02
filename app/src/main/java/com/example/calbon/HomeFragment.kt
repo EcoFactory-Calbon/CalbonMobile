@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.calbon.adapter.LinksAdapter
-import com.example.calbon.api.RetrofitClient
+import com.example.calbon.api.RetrofitClient // Import correto
 import com.example.calbon.model.LinkItem
 import com.example.calbon.util.SavedPostsManager
 import kotlinx.coroutines.CoroutineScope
@@ -49,13 +49,18 @@ class HomeFragment : Fragment() {
     private fun fetchLinks() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val links: List<LinkItem> = RetrofitClient.instance.getLinks()
+                // CORREÇÃO APLICADA: Acessando o serviço Noticia via apiNoticias
+                // Correto: RetrofitClient.apiNoticias.getLinks()
+                // Erro anterior: RetrofitClient.instance.getLinks()
+                val links: List<LinkItem> = RetrofitClient.apiNoticias.getLinks()
+
                 withContext(Dispatchers.Main) {
                     adapter.setItems(links)
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(requireContext(), "Erro ao carregar links", Toast.LENGTH_SHORT).show()
+                    e.printStackTrace()
+                    Toast.makeText(requireContext(), "Erro ao carregar links. Detalhe: ${e.message}", Toast.LENGTH_LONG).show()
                 }
             }
         }
