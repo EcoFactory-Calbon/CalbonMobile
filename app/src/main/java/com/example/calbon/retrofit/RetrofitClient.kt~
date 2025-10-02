@@ -1,0 +1,32 @@
+package com.example.calbon.api
+
+import Usuario
+import com.example.calbon.data.EmailRequest // Presumindo que você usa esta classe
+import com.example.calbon.data.UserItem // Presumindo que você usa esta classe
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+
+// As interfaces 'Usuario' e 'Noticia' devem estar definidas neste ou em um pacote importado
+
+object RetrofitClient {
+
+    private const val BASE_URL = "https://raw.githubusercontent.com/"
+
+    // Função interna para criar a instância Retrofit base, evitando repetição
+    private fun getRetrofitInstance(): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    // Acessa o serviço de Notícias
+    val apiNoticias: Noticia by lazy {
+        getRetrofitInstance().create(Noticia::class.java)
+    }
+
+    // Acessa o serviço de Usuário
+    val apiUsuario: Usuario by lazy {
+        getRetrofitInstance().create(Usuario::class.java)
+    }
+}

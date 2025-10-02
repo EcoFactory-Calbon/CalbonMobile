@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".PerfilFragment">
+
+    <!-- Linha 1: Ícone e botão "Informações do Perfil" -->
+    <ImageView
+        android:id="@+id/icone_info"
+        android:layout_width="35dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:src="@drawable/icone_info_perfil"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/infoPerfil"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:text="Informações do Perfil"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toEndOf="@id/icone_info"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/icone_info" />
+
+    <!-- Linha 2: Ícone e botão "Notificações" -->
+    <ImageView
+        android:id="@+id/icone_notificacoes"
+        android:layout_width="35dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/icone_notificacoes"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/icone_info" />
+
+    <Button
+        android:id="@+id/notificacao"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:text="Notificações"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toEndOf="@id/icone_notificacoes"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/icone_notificacoes" />
+
+    <!-- Linha 3: Ícone e botão "Permissões do Dispositivo" -->
+    <ImageView
+        android:id="@+id/icone_permissao"
+        android:layout_width="35dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/icone_politicas_priv"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/icone_notificacoes" />
+
+    <Button
+        android:id="@+id/permisoes"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:text="Permissões do Dispositivo"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toEndOf="@id/icone_permissao"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/icone_permissao" />
+
+    <!-- Linha 4: Ícone e botão "Termos e Políticas" -->
+    <ImageView
+        android:id="@+id/icone_termos"
+        android:layout_width="35dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/icone_info"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/icone_permissao" />
+
+    <Button
+        android:id="@+id/termos"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:text="Termos e Políticas"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toEndOf="@id/icone_termos"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/icone_termos" />
+
+    <!-- Linha 5: Ícone e botão "Central de Ajuda" -->
+    <ImageView
+        android:id="@+id/icone_ajuda"
+        android:layout_width="35dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/icone_ajuda_suporte"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/icone_termos" />
+
+    <Button
+        android:id="@+id/ajuda"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:text="Central de Ajuda"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toEndOf="@id/icone_ajuda"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/icone_ajuda" />
+
+    <!-- Linha 6: Ícone e botão "Sair da Conta" -->
+    <ImageView
+        android:id="@+id/icone_sair"
+        android:layout_width="35dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/icone_sair_conta"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/icone_ajuda" />
+
+    <TextView
+        android:id="@+id/sair"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Sair da Conta"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/vermelho"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toEndOf="@id/icone_sair"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/icone_ajuda"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
