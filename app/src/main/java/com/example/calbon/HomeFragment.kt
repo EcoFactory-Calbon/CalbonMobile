@@ -4,19 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.calbon.adapter.LinksAdapter
-import com.example.calbon.api.RetrofitClient // Import correto
+import com.example.calbon.api.RetrofitClient
 import com.example.calbon.model.LinkItem
-import com.example.calbon.util.SavedPostsManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-
 class HomeFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
@@ -31,38 +30,36 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // RecyclerView
         recyclerView = view.findViewById(R.id.CardsRecycleViewHome)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-
-        // Passa callback no construtor
         adapter = LinksAdapter { item ->
-            // Atualiza o item clicado na lista
-            val position = (0 until adapter.itemCount).firstOrNull { adapter.getItem(it).id == item.id }
-            position?.let { adapter.notifyItemChanged(it) }
+            val pos = (0 until adapter.itemCount).firstOrNull { adapter.getItem(it).id == item.id }
+            pos?.let { adapter.notifyItemChanged(it) }
         }
-
         recyclerView.adapter = adapter
 
         fetchLinks()
+
+        // Configuração para abrir drawer
+        val configuracao: ImageView = view.findViewById(R.id.configuracao)
+        configuracao.setOnClickListener {
+            (activity as? MainActivity)?.openDrawerFromFragment()
+        }
     }
 
     private fun fetchLinks() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                // CORREÇÃO APLICADA: Acessando o serviço Noticia via apiNoticias
-                // Correto: RetrofitClient.apiNoticias.getLinks()
-                // Erro anterior: RetrofitClient.instance.getLinks()
                 val links: List<LinkItem> = RetrofitClient.apiNoticias.getLinks()
-
-                withContext(Dispatchers.Main) {
-                    adapter.setItems(links)
-                }
+                withContext(Dispatchers.Main) { adapter.setItems(links) }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     e.printStackTrace()
-                    Toast.makeText(requireContext(), "Erro ao carregar links. Detalhe: ${e.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), "Erro ao carregar links: ${e.message}", Toast.LENGTH_LONG).show()
                 }
             }
         }
     }
 }
+

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/home_cinza"
+            android:title="Início" />
+
+        <item
+            android:id="@+id/nav_dashboard"
+            android:icon="@drawable/icone_dashboard"
+            android:title="Dashboard" />
+
+        <item
+            android:id="@+id/nav_form"
+            android:icon="@drawable/formulario_cinza"
+            android:title="Formulário" />
+
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/perfil_cinza"
+            android:title="Perfil" />
+
+        <item
+            android:id="@+id/nav_terms"
+            android:icon="@drawable/icone_info"
+            android:title="Termos e Políticas de Privacidade" />
+
+        <item
+            android:id="@+id/nav_help"
+            android:icon="@drawable/icone_ajuda_suporte"
+            android:title="Central de Ajuda" />
+
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/icone_configuracoes"
+            android:title="Configurações" />
+
+    </group>
+
+</menu>

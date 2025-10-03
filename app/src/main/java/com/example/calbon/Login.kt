@@ -95,7 +95,7 @@ class Login : AppCompatActivity() {
                                     // Passa o objeto completo para a MainActivity
                                     val intent = Intent(this@Login, MainActivity::class.java)
                                     intent.putExtra("fragmentToLoad", "HomeFragment")
-                                    intent.putExtra("user", usuario) // UserItem é Parcelable
+                                    intent.putExtra("user", usuario)
                                     startActivity(intent)
                                     finish()
                                 } else {
