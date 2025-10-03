@@ -1,44 +1,55 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:layout_height="match_parent">
 
-    <!-- Container para fragments -->
-    <FrameLayout
-        android:id="@+id/fragment_container"
+    <!-- Conteúdo principal -->
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/bottomNavigationView"/>
+        android:layout_height="match_parent">
 
-    <!-- Bottom Navigation -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        app:menu="@menu/bottom_nav_menu"
-        app:itemIconTint="@null"
-        app:labelVisibilityMode="unlabeled"/>
+        <!-- Container para fragments -->
+        <FrameLayout
+            android:id="@+id/fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/bottomNavigationView"/>
 
+        <!-- Bottom Navigation -->
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNavigationView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            app:menu="@menu/bottom_nav_menu"
+            app:itemIconTint="@null"
+            app:labelVisibilityMode="unlabeled"/>
 
-    <!-- Floating Action Button centralizado -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
+        <!-- FAB centralizado -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="36dp"
+            android:backgroundTint="@color/calbon_black"
+            android:src="@drawable/formulario_cinza"
+            app:tint="@color/black"
+            app:fabCustomSize="56dp"
+            app:maxImageSize="32dp"
+            app:elevation="8dp" />
+    </RelativeLayout>
+
+    <!-- Navigation Drawer -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="36dp"
-        android:backgroundTint="@color/teal_200"
-        android:src="@drawable/formulario_cinza"
-        app:tint="@color/black"
-        app:fabCustomSize="56dp"
-        app:maxImageSize="32dp"
-        app:elevation="8dp" />
-
-
-
-
-</RelativeLayout>
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        app:menu="@menu/drawer_menu"
+        app:headerLayout="@layout/nav_header"
+        android:background="@color/calbon_black"/>
+</androidx.drawerlayout.widget.DrawerLayout>

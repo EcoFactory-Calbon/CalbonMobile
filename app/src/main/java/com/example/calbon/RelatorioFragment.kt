@@ -1,18 +1,19 @@
 package com.example.calbon
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.fragment.app.Fragment
 
-class RelatorioFragment : Fragment() {
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_relatorio, container, false)
+class RelatorioFragment : Fragment(R.layout.fragment_relatorio) {
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val btnDrawer = view.findViewById<ImageView>(R.id.configuracao)
+        btnDrawer.setOnClickListener {
+            // Chama o drawer da Activity
+            (activity as? MainActivity)?.openDrawerFromFragment()
+        }
     }
 }
