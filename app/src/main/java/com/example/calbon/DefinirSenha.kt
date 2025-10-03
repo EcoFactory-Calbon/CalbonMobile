@@ -50,12 +50,13 @@ class DefinirSenha : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+
             // Criar usuário no Firebase
             auth.createUserWithEmailAndPassword(emailRecebido, senhaDigitada)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         Toast.makeText(this, "Cadastro realizado com sucesso", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(this, MainActivity::class.java)
+                        val intent = Intent(this, Login::class.java)
                         startActivity(intent)
                         finish()
                     } else {

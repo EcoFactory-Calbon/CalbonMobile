@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+  <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      android:id="@+id/main"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:padding="16dp"
+      tools:context=".InfoPessoaisActivity">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/imageView"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/circle_border"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/CircleImage"
+        tools:src="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/nome_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="Rafael Akira"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <TextView
+        android:id="@+id/email_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="rafael.akira@gmail.com"
+        android:textColor="#80FFFFFF"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nome_info" />
+
+    <ImageView
+        android:id="@+id/voltar"
+        android:layout_width="52dp"
+        android:layout_height="29dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/voltar" />
+
+    <TextView
+        android:id="@+id/nome_completo"
+        android:layout_width="346dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/border"
+        android:gravity=""
+        android:text="Nome Completo: "
+        android:textSize="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/email_info" />
+
+    <ImageView
+        android:id="@+id/editar_nome"
+        android:layout_width="31dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.953"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/nome_completo"
+        app:srcCompat="@drawable/icone_editar" />
+
+    <TextView
+        android:id="@+id/localizacao"
+        android:layout_width="346dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/border"
+        android:gravity=""
+        android:text="Localização: "
+        android:textSize="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nome_completo" />
+
+    <ImageView
+        android:id="@+id/editar_localizazao"
+        android:layout_width="30dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.953"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/localizacao"
+        app:srcCompat="@drawable/icone_editar" />
+
+    <TextView
+        android:id="@+id/email"
+        android:layout_width="346dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/border"
+        android:gravity=""
+        android:text="Email:  "
+        android:textSize="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/localizacao" />
+
+    <ImageView
+        android:id="@+id/editar_email"
+        android:layout_width="30dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.953"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/email"
+        app:srcCompat="@drawable/icone_editar" />
+
+    <TextView
+        android:id="@+id/senha"
+        android:layout_width="346dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/border"
+        android:gravity=""
+        android:text="Senha: "
+        android:textSize="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/email" />
+
+    <ImageView
+        android:id="@+id/editar_senha"
+        android:layout_width="30dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.953"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/senha"
+        app:srcCompat="@drawable/icone_editar" />
+
+    <TextView
+        android:id="@+id/num_cracha"
+        android:layout_width="346dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/border"
+        android:gravity=""
+        android:text="N° do Crachá: "
+        android:textSize="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/senha" />
+    <TextView
+        android:id="@+id/cod_empresa"
+        android:layout_width="346dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/border"
+        android:gravity=""
+        android:text="Código da Empresa: "
+        android:textSize="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/num_cracha" />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,8 +1,13 @@
+// DENTRO DE build.gradle.kts (Módulo: app)
+
 plugins {
+    // PLUGINS CORRIGIDOS (Usando alias)
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.google.gms.google.services)
-    id("kotlin-parcelize") // ← ADICIONE ISSO
+
+    // ESSENCIAL: Ativa o Parcelize para usar @Parcelize na data class
+    id("kotlin-parcelize")
 }
 
 android {
@@ -44,7 +49,6 @@ android {
     buildFeatures {
         viewBinding = true
     }
-
 }
 
 dependencies {
@@ -78,5 +82,4 @@ dependencies {
 
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-
 }

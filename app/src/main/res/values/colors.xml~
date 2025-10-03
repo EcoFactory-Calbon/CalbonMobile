@@ -9,6 +9,9 @@
     <color name="black">#07101C</color>
     <color name="white">#FFFFFF</color>
     <color name="teal_200">#5FBCDB</color>
+    <color name="red">#043A4D</color>
+    <color name="vermelho">#FF0000 </color>
+
 
     <!-- Cores para Bottom Navigation -->
     <color name="bottom_nav_icon_unselected">#757575</color>

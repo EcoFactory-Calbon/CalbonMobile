@@ -139,18 +139,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/icone_ajuda" />
 
-    <Button
+    <TextView
         android:id="@+id/sair"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
         android:text="Sair da Conta"
-        android:textSize="16dp"
+        android:textSize="16sp"
         android:textStyle="bold"
         android:textColor="@color/vermelho"
+        android:clickable="true"
+        android:focusable="true"
         android:layout_marginStart="8dp"
         app:layout_constraintStart_toEndOf="@id/icone_sair"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/icone_sair" />
+        app:layout_constraintTop_toTopOf="@id/icone_ajuda"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

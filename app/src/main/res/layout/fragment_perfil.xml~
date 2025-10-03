@@ -10,16 +10,15 @@
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imageView"
         android:layout_width="96dp"
-        android:layout_height="96dp"
+        android:layout_height="95dp"
         android:layout_marginTop="36dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.196"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Full"
         android:background="@drawable/circle_border"
-        app:shapeAppearanceOverlay="@style/CircleImage"
         tools:src="@tools:sample/avatars" />
-
 
     <TextView
         android:id="@+id/nomeUsuario"

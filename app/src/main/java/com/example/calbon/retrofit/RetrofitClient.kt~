@@ -1,7 +1,8 @@
 package com.example.calbon.api
 
 import Usuario
-
+import com.example.calbon.data.EmailRequest // Presumindo que você usa esta classe
+import com.example.calbon.data.UserItem // Presumindo que você usa esta classe
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
