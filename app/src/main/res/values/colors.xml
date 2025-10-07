@@ -11,6 +11,7 @@
     <color name="teal_200">#5FBCDB</color>
     <color name="red">#043A4D</color>
     <color name="vermelho">#C04747 </color>
+    <color name ="border_dash">#9B84EC</color>
 
 
     <!-- Cores para Bottom Navigation -->
