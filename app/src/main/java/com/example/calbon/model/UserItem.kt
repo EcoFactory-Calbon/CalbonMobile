@@ -10,7 +10,6 @@ data class UserItem(
     val codigo_empresa: String
 ) : Parcelable
 
-// CORRIGIDO: Removido o comentário problemático (// Data/EmailRequest.kt)
 
 data class EmailRequest(
     val email: String
