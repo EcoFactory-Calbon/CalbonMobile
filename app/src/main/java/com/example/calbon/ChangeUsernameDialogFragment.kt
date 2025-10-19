@@ -10,6 +10,11 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.lifecycleScope
+import com.example.calbon.api.RetrofitClient
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ChangeUsernameDialogFragment : DialogFragment() {
 
@@ -52,14 +57,40 @@ class ChangeUsernameDialogFragment : DialogFragment() {
 
         // Confirmar alteração
         btnConfirm.setOnClickListener {
-            val newValue = editText.text.toString()
+            val newValue = editText.text.toString().trim()
+            val token = arguments?.getString("token") ?: ""
+            val userId = arguments?.getLong("userId") ?: 0L
+
             if (newValue.isNotEmpty()) {
-                listener.onFieldChanged(field ?: "", newValue)
-                dismiss()
+                if (token.isNotEmpty() && userId != 0L) {
+                    // Chamada para atualizar no servidor
+                    lifecycleScope.launch {
+                        try {
+                            val map = mapOf(field!! to newValue)
+                            val resposta = withContext(Dispatchers.IO) {
+                                RetrofitClient.apiUsuario.atualizarUsuario("Bearer $token", userId, map)
+                            }
+                            if (resposta.isSuccessful) {
+                                listener.onFieldChanged(field, newValue)
+                                dismiss()
+                            } else {
+                                editText.error = "Erro ${resposta.code()} ao atualizar"
+                            }
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            editText.error = "Falha na conexão"
+                        }
+                    }
+                } else {
+                    // fallback: apenas atualiza local
+                    listener.onFieldChanged(field ?: "", newValue)
+                    dismiss()
+                }
             } else {
                 editText.error = "Por favor, digite um valor."
             }
         }
+
 
         return view
     }

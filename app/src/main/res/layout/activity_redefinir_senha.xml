@@ -62,48 +62,15 @@
             android:textColor="@color/white" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <ImageView
-        android:id="@+id/linha_ou"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="12dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/InputEmailRedefinirSenha"
-        app:srcCompat="@drawable/linha_ou" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/InputSmsRedefinirSenha"
-        android:layout_width="369dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="14dp"
-        android:layout_marginEnd="1dp"
-        android:background="@drawable/border"
-        android:hint="SMS"
-        app:boxStrokeColor="@color/white"
-        app:hintTextColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linha_ou">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@android:color/transparent"
-            android:textColor="@color/white" />
-    </com.google.android.material.textfield.TextInputLayout>
-
     <Button
         android:id="@+id/continuar"
         android:layout_width="230dp"
         android:layout_height="59dp"
-        android:layout_marginTop="45dp"
         android:text="Continuar"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/InputSmsRedefinirSenha" />
+        tools:layout_editor_absoluteY="488dp" />
 
     <TextView
         android:id="@+id/textView3"

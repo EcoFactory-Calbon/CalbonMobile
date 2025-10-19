@@ -44,76 +44,13 @@ class Primeiro_acesso : AppCompatActivity() {
 
         voltar.setOnClickListener { finish() }
 
-        continuar.setOnClickListener {
-            // Transformando o email em MAIÚSCULAS
-            val emailDigitado = emailLayout.editText?.text.toString().trim().uppercase()
-            val numCrachaDigitado = numCrachaLayout.editText?.text.toString().trim()
-            val codigoDigitado = codigoEmpresaLayout.editText?.text.toString().trim()
-
-            // Limpa erros anteriores
-            emailLayout.error = null
-            numCrachaLayout.error = null
-            codigoEmpresaLayout.error = null
-
-            if (emailDigitado.isEmpty() || numCrachaDigitado.isEmpty() || codigoDigitado.isEmpty()) {
-                if (emailDigitado.isEmpty()) emailLayout.error = "Preencha o email"
-                if (numCrachaDigitado.isEmpty()) numCrachaLayout.error = "Preencha o número do crachá"
-                if (codigoDigitado.isEmpty()) codigoEmpresaLayout.error = "Preencha o código da empresa"
-                return@setOnClickListener
-            }
-
-            continuar.isEnabled = false
-
-            lifecycleScope.launch {
-                try {
-                    // 1️⃣ Verifica se o email existe na base interna (ignora maiúsculas/minúsculas)
-                    val usuarios = withContext(Dispatchers.IO) { apiUsuario.getUsers() }
-                    val usuario = usuarios.find { it.email.equals(emailDigitado, ignoreCase = true) }
-
-                    if (usuario == null) {
-                        emailLayout.error = "Email não encontrado"
-                        continuar.isEnabled = true
-                        return@launch
-                    }
-
-                    // 2️⃣ Verifica se o email já existe no Firebase
-                    val signInMethods = auth.fetchSignInMethodsForEmail(emailDigitado).await()
-                    if (!signInMethods.signInMethods.isNullOrEmpty()) {
-                        emailLayout.error = "Email já registrado no Firebase"
-                        continuar.isEnabled = true
-                        return@launch
-                    }
-
-                    // 3️⃣ Valida crachá e código
-                    var erro = false
-                    if (usuario.num_cracha.toString() != numCrachaDigitado) {
-                        numCrachaLayout.error = "Número do crachá incorreto"
-                        erro = true
-                    }
-                    if (usuario.codigo_empresa.toString() != codigoDigitado) {
-                        codigoEmpresaLayout.error = "Código da empresa incorreto"
-                        erro = true
-                    }
-                    if (erro) {
-                        continuar.isEnabled = true
-                        return@launch
-                    }
-
-                    // 4️⃣ Tudo certo → vai para DefinirSenha
-                    val intent = Intent(this@Primeiro_acesso, DefinirSenha::class.java)
-                    intent.putExtra("emailUsuario", emailDigitado)
-                    startActivity(intent)
-                    finish()
-
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    emailLayout.error = "Erro ao consultar Firebase ou API"
-                    continuar.isEnabled = true
-                }
-            }
+        continuar.setOnClickListener{
+            val intent = Intent(this, DefinirSenha::class.java)
+            startActivity(intent)
+            finish()
         }
 
-        login.setOnClickListener {
+        login.setOnClickListener{
             val intent = Intent(this, Login::class.java)
             startActivity(intent)
             finish()

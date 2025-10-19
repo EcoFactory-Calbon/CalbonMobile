@@ -7,8 +7,20 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
+import com.example.calbon.api.RetrofitClient
+import com.example.calbon.api.UsuarioDetalhe
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class InfoPessoaisActivity : AppCompatActivity(), ChangeUsernameDialogListener {
+
+    private lateinit var nome_completo: TextView
+    private lateinit var localizacao: TextView
+    private lateinit var email: TextView
+    private lateinit var senha: TextView
+
     private fun showChangeDialog(title: String, subtitle: String, field: String) {
         val dialog = ChangeUsernameDialogFragment()
         val bundle = Bundle()
@@ -18,6 +30,7 @@ class InfoPessoaisActivity : AppCompatActivity(), ChangeUsernameDialogListener {
         dialog.arguments = bundle
         dialog.show(supportFragmentManager, "change$field")
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -28,10 +41,10 @@ class InfoPessoaisActivity : AppCompatActivity(), ChangeUsernameDialogListener {
             insets
         }
 
-        val nome_completo = findViewById<TextView>(R.id.nome_completo)
-        val localizacao = findViewById<TextView>(R.id.localizacao)
-        val email = findViewById<TextView>(R.id.email)
-        val senha = findViewById<TextView>(R.id.senha)
+        nome_completo = findViewById(R.id.nome_completo)
+        localizacao = findViewById(R.id.localizacao)
+        email = findViewById(R.id.email)
+        senha = findViewById(R.id.senha)
 
         val editar_nome = findViewById<ImageView>(R.id.editar_nome)
         val editar_localizazao = findViewById<ImageView>(R.id.editar_localizazao)
@@ -39,37 +52,67 @@ class InfoPessoaisActivity : AppCompatActivity(), ChangeUsernameDialogListener {
         val editar_senha = findViewById<ImageView>(R.id.editar_senha)
         val voltar = findViewById<ImageView>(R.id.voltar)
 
-
-
         editar_nome.setOnClickListener {
             showChangeDialog("Alterar Nome Completo", nome_completo.text.toString(), "nome_completo")
         }
-
         editar_localizazao.setOnClickListener {
             showChangeDialog("Alterar Localização", localizacao.text.toString(), "localizacao")
         }
-
         editar_email.setOnClickListener {
             showChangeDialog("Alterar Email", email.text.toString(), "email")
         }
-
         editar_senha.setOnClickListener {
             showChangeDialog("Alterar Senha", "Digite a nova senha", "senha")
         }
 
+        voltar.setOnClickListener { finish() }
 
-        voltar.setOnClickListener {
-            finish()
+        // ✅ Buscar usuário ao abrir Activity
+        val numeroCracha = intent.getIntExtra("numeroCracha", -1)
+        if (numeroCracha != -1) {
+            buscarUsuario(numeroCracha)
         }
     }
 
-    // Aqui recebemos o valor alterado do dialog
+    private fun buscarUsuario(cracha: Int) {
+        lifecycleScope.launch {
+            try {
+                val resposta = withContext(Dispatchers.IO) {
+                    RetrofitClient.apiUsuario.buscarPorCracha(cracha)
+                }
+
+                if (resposta.isSuccessful) {
+                    //val usuario: UsuarioDetalhe? = resposta.body()
+                    //usuario?.let { preencherCampos(it) }
+                } else {
+                    nome_completo.text = "Erro ao carregar"
+                    email.text = "Erro ao carregar"
+                    senha.text = "********"
+                    localizacao.text = "Não informado"
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                nome_completo.text = "Erro de conexão"
+                email.text = "Erro de conexão"
+                senha.text = "********"
+                localizacao.text = "Não informado"
+            }
+        }
+    }
+
+    private fun preencherCampos(usuario: UsuarioDetalhe) {
+        nome_completo.text = "${usuario.nome} ${usuario.sobrenome}"
+        email.text = usuario.email
+        senha.text = "********" // máscara
+        localizacao.text = usuario.setor ?: "Não informado"
+    }
+
     override fun onFieldChanged(field: String, newValue: String) {
         when (field) {
-            "nome_completo" -> findViewById<TextView>(R.id.nome_completo).text = newValue
-            "localizacao" -> findViewById<TextView>(R.id.localizacao).text = newValue
-            "email" -> findViewById<TextView>(R.id.email).text = newValue
-            "senha" -> findViewById<TextView>(R.id.senha).text = "********" // máscara
+            "nome_completo" -> nome_completo.text = newValue
+            "localizacao" -> localizacao.text = newValue
+            "email" -> email.text = newValue
+            "senha" -> senha.text = "********" // máscara
         }
     }
 }

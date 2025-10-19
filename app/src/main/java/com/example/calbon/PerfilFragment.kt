@@ -1,18 +1,30 @@
 package com.example.calbon
 
-import UserItem
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.example.calbon.adapter.PerfilPagerAdapter
+import com.example.calbon.api.RetrofitClient
+import com.example.calbon.api.UsuarioApi
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import android.widget.TextView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class PerfilFragment : Fragment() {
+
+    private lateinit var nomeTextView: TextView
+    private lateinit var emailTextView: TextView
+
+    // Aqui você pode pegar o token salvo do SharedPreferences ou da Activity
+    private val token: String?
+        get() = activity?.intent?.getStringExtra("token") // ajustar conforme como você armazenou
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,33 +38,56 @@ class PerfilFragment : Fragment() {
 
         val viewPager: ViewPager2 = view.findViewById(R.id.view_pager)
         val tabLayout: TabLayout = view.findViewById(R.id.tab_layout)
-        val nome = view.findViewById<TextView>(R.id.nomeUsuario)
-        val email = view.findViewById<TextView>(R.id.emailUsuario)
+        nomeTextView = view.findViewById(R.id.nomeUsuario)
+        emailTextView = view.findViewById(R.id.emailUsuario)
 
         // Adapter do ViewPager2
         val adapter = PerfilPagerAdapter(this)
         viewPager.adapter = adapter
 
-        // Recuperando dados do usuário via Bundle
-        val nomeUsuario = arguments?.getString("nome_completo")
-        val emailUsuario = arguments?.getString("email")
-
-        nome.text = nomeUsuario ?: "Nome não disponível"
-        email.text = emailUsuario ?: "Email não disponível"
-
-        val user = arguments?.getParcelable<UserItem>("user")
-        user?.let {
-            nome.text = it.nome_completo
-            email.text = it.email
-        }
-
         // Ligando TabLayout e ViewPager2
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            tab.text = when(position) {
+            tab.text = when (position) {
                 0 -> "Posts salvos"
                 1 -> "Configurações"
                 else -> ""
             }
         }.attach()
+
+        // Buscar dados do usuário
+        buscarDadosUsuario()
+    }
+
+    private fun buscarDadosUsuario() {
+        val numeroCracha = activity?.intent?.getIntExtra("numeroCracha", -1) ?: -1
+        if (numeroCracha == -1) {
+            nomeTextView.text = "Nome não disponível"
+            emailTextView.text = "Email não disponível"
+            return
+        }
+
+        lifecycleScope.launch {
+            try {
+                val resposta = withContext(Dispatchers.IO) {
+                    RetrofitClient.apiUsuario.buscarPorCracha(numeroCracha)
+                }
+
+                if (resposta.isSuccessful) {
+                    val usuario = resposta.body()
+                    usuario?.let {
+                        nomeTextView.text = it.nome
+                        emailTextView.text = it.email
+                    }
+                } else {
+                    nomeTextView.text = "Erro ao carregar"
+                    emailTextView.text = "Erro ao carregar"
+                }
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                nomeTextView.text = "Erro de conexão"
+                emailTextView.text = "Erro de conexão"
+            }
+        }
     }
 }
