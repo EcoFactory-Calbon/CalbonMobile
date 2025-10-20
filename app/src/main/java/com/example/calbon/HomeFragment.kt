@@ -51,8 +51,8 @@ class HomeFragment : Fragment() {
     private fun fetchLinks() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val links: List<LinkItem> = RetrofitClient.apiNoticias.getLinks()
-                withContext(Dispatchers.Main) { adapter.setItems(links) }
+                //val links: List<LinkItem> = RetrofitClient.apiNoticias.getLinks()
+                //withContext(Dispatchers.Main) { adapter.setItems(links) }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     e.printStackTrace()
