@@ -1,0 +1,31 @@
+
+import com.example.calbon.api.Usuario
+import com.example.calbon.api.UsuarioDetalhe
+import retrofit2.Response
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.PATCH
+import retrofit2.http.Path
+
+interface UsuarioApi {
+        @GET("joycenick/ApiTestNoticias/main/usuario.json")
+        suspend fun getUsers(): List<Usuario>
+        // ApiService.kt
+        interface ApiService {
+                @GET("funcionario/buscarCracha/{cracha}")
+                suspend fun buscarPorCracha(
+                        @Path("cracha") cracha: Int
+                ): Response<UsuarioApi>
+
+                @GET("funcionario/buscarEmpresa/{id}")
+                suspend fun buscarPorEmpresa(
+                        @Path("id") idEmpresa: Int
+                ): Response<List<UsuarioDetalhe>>
+
+                @PATCH("funcionario/atualizar/{id}")
+                suspend fun atualizarUsuario(
+                        @Path("id") id: Long,
+                        @Body camposAtualizados: Map<String, Any>
+                ): Response<Usuario>
+        }
+}

@@ -26,41 +26,50 @@ class DefinirSenha : AppCompatActivity() {
             insets
         }
 
-        // Firebase
         auth = FirebaseAuth.getInstance()
 
-        // Variáveis
+        // Recebe os dados do Primeiro_acesso
+        val emailUsuario = intent.getStringExtra("emailUsuario") ?: ""
+        val nome = intent.getStringExtra("nome") ?: ""
+        val sobrenome = intent.getStringExtra("sobrenome") ?: ""
+        val numeroCracha = intent.getIntExtra("numeroCracha", 0)
+        val idCargo = intent.getIntExtra("idCargo", 0)
+        val idLocalizacao = intent.getIntExtra("idLocalizacao", 0)
+
         val finalizar = findViewById<Button>(R.id.finalizar)
-        val senha = findViewById<TextInputLayout>(R.id.InputDefinirSenha)
-        val confirmarSenha = findViewById<TextInputLayout>(R.id.InputConfirmarSenha)
-        val emailRecebido = intent.getStringExtra("emailUsuario") ?: ""
+        val senhaLayout = findViewById<TextInputLayout>(R.id.InputDefinirSenha)
+        val confirmarSenhaLayout = findViewById<TextInputLayout>(R.id.InputConfirmarSenha)
 
-        // Clique do botão FINALIZAR
         finalizar.setOnClickListener {
-            val senhaDigitada = senha.editText?.text.toString()
-            val confirmarSenhaDigitada = confirmarSenha.editText?.text.toString()
+            val senha = senhaLayout.editText?.text.toString()
+            val confirmarSenha = confirmarSenhaLayout.editText?.text.toString()
 
-            if (senhaDigitada.isEmpty() || confirmarSenhaDigitada.isEmpty()) {
+            if (senha.isEmpty() || confirmarSenha.isEmpty()) {
                 Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            if (senhaDigitada != confirmarSenhaDigitada) {
-                Toast.makeText(this, "Senhas diferentes", Toast.LENGTH_SHORT).show()
+            if (senha != confirmarSenha) {
+                Toast.makeText(this, "As senhas não coincidem", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-
-            // Criar usuário no Firebase
-            auth.createUserWithEmailAndPassword(emailRecebido, senhaDigitada)
+            // Criar usuário no Firebase com e-mail e senha
+            auth.createUserWithEmailAndPassword(emailUsuario, senha)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
-                        Toast.makeText(this, "Cadastro realizado com sucesso", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Cadastro realizado com sucesso!", Toast.LENGTH_SHORT).show()
+
+                        // Aqui você pode salvar outros dados do usuário em Firestore ou Realtime Database, se necessário
+                        // Ex: nome, sobrenome, crachá, cargo, localização
+                        // FirebaseDatabase.getInstance().getReference("usuarios").child(auth.currentUser.uid).setValue(usuario)
+
+                        // Volta para login
                         val intent = Intent(this, Login::class.java)
                         startActivity(intent)
                         finish()
                     } else {
-                        Toast.makeText(this, "Erro ao cadastrar", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Erro ao cadastrar: ${task.exception?.message}", Toast.LENGTH_LONG).show()
                     }
                 }
         }

@@ -82,8 +82,8 @@ class InfoPessoaisActivity : AppCompatActivity(), ChangeUsernameDialogListener {
                 }
 
                 if (resposta.isSuccessful) {
-                    //val usuario: UsuarioDetalhe? = resposta.body()
-                    //usuario?.let { preencherCampos(it) }
+                    val usuario: UsuarioDetalhe? = resposta.body()
+                    usuario?.let { preencherCampos(it) }
                 } else {
                     nome_completo.text = "Erro ao carregar"
                     email.text = "Erro ao carregar"
