@@ -2,7 +2,7 @@ package com.example.calbon.api
 
 
 data class LoginRequest(
-    val numeroCracha: Int,
+    val email: String,
     val senha: String
 )
 

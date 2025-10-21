@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.calbon.adapter.LinksAdapter
 import com.example.calbon.api.RetrofitClient
+import com.example.calbon.model.LinkItem
 import com.example.calbon.util.SavedPostsManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -17,6 +18,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class PostSalvoFragment : Fragment() {
+
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: LinksAdapter
@@ -33,13 +35,9 @@ class PostSalvoFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         adapter = LinksAdapter { item ->
-            // Atualiza só o item clicado
-            val position = (0 until adapter.itemCount)
-                .firstOrNull { adapter.getItem(it).id == item.id }
-
-            position?.let { pos ->
-                adapter.notifyItemChanged(pos)
-            }
+            // atualiza visual do item clicado
+            val position = (0 until adapter.itemCount).firstOrNull { adapter.getItem(it).id == item.id }
+            position?.let { adapter.notifyItemChanged(it) }
         }
 
         recyclerView.adapter = adapter
@@ -50,24 +48,15 @@ class PostSalvoFragment : Fragment() {
     private fun fetchSalvos() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                // 🔹 Corrigido: pega os links do RetrofitClient.apiNoticias
-                val allLinks = RetrofitClient.apiNoticias.getLinks()
-
-                // 🔹 Filtra apenas os salvos
-                val savedLinks = allLinks.filter { link ->
-                    SavedPostsManager.isPostSaved(requireContext(), link.id.toString())
-                }
+//                val allLinks = RetrofitClient.instance.getLinks() // ou lista local
+//                val savedLinks = allLinks.filter { SavedPostsManager.isPostSaved(requireContext(), it.id.toString()) }
 
                 withContext(Dispatchers.Main) {
-                    adapter.setItems(savedLinks)
+//                    adapter.setItems(savedLinks)
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(
-                        requireContext(),
-                        "Erro ao carregar links",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(requireContext(), "Erro ao carregar links", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -75,11 +64,7 @@ class PostSalvoFragment : Fragment() {
 
     private fun filterSalvos() {
         val currentLinks = adapter.run { (0 until itemCount).map { getItem(it) } }
-
-        val filtered = currentLinks.filter { link ->
-            SavedPostsManager.isPostSaved(requireContext(), link.id.toString())
-        }
-
+        val filtered = currentLinks.filter { SavedPostsManager.isPostSaved(requireContext(), it.id.toString()) }
         adapter.setItems(filtered)
     }
 }

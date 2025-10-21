@@ -1,6 +1,6 @@
 package com.example.calbon.api
 
-import UsuarioApi
+import com.example.calbon.api.UsuarioApi
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

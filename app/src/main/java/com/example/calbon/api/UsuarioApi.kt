@@ -28,4 +28,16 @@ interface UsuarioApi {
                 @Path("id") id: Long,
                 @Body camposAtualizados: Map<String, Any>
         ): Response<Usuario>
+
+        //login
+        @POST("/auth/admin/login")
+        suspend fun loginFuncionario(
+                @Body request: LoginRequest
+        ): Response<LoginResponse>
+
+        //primeiro acesso
+        @POST("funcionario/primeiroAcesso")
+        suspend fun primeiroAcesso(
+                @Body request: PrimeiroAcessoRequest
+        ): Response<PrimeiroAcessoResponse>
 }

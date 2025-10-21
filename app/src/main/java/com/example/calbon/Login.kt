@@ -7,35 +7,34 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
+import com.example.calbon.api.LoginRequest
 import com.example.calbon.api.RetrofitClient.apiUsuario
 import com.google.android.material.textfield.TextInputLayout
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class Login : AppCompatActivity() {
 
-    private lateinit var auth: FirebaseAuth
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_login)
 
-        auth = FirebaseAuth.getInstance()
-
+        // Ajuste de padding com insets
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
+        // Views
         val emailLayout = findViewById<TextInputLayout>(R.id.InputEmail)
         val senhaLayout = findViewById<TextInputLayout>(R.id.InputSenha)
         val voltar = findViewById<ImageView>(R.id.voltarRedefinirSenha)
@@ -43,87 +42,75 @@ class Login : AppCompatActivity() {
         val primeiroAcesso = findViewById<TextView>(R.id.primeiroAcesso)
         val redefinirSenha = findViewById<TextView>(R.id.esqueciSenha)
 
-        // Define cor do hint
         emailLayout.defaultHintTextColor = ColorStateList.valueOf(Color.WHITE)
         senhaLayout.defaultHintTextColor = ColorStateList.valueOf(Color.WHITE)
 
+        // Botão voltar
         voltar.setOnClickListener { finish() }
 
+        // Botão continuar → login normal via API
         continuar.setOnClickListener {
             val emailDigitado = emailLayout.editText?.text.toString().trim()
             val senhaDigitado = senhaLayout.editText?.text.toString().trim()
 
-            // Limpa erros anteriores
             emailLayout.error = null
             senhaLayout.error = null
 
-            // Valida campos vazios
-            var erro = false
             if (emailDigitado.isEmpty()) {
                 emailLayout.error = "Preencha o email"
-                erro = true
+                return@setOnClickListener
             }
             if (senhaDigitado.isEmpty()) {
                 senhaLayout.error = "Preencha a senha"
-                erro = true
+                return@setOnClickListener
             }
-            if (erro) return@setOnClickListener
 
             continuar.isEnabled = false
 
-            // 1️⃣ Verifica se o email existe na base interna
             lifecycleScope.launch {
                 try {
-                    val usuarios = withContext(Dispatchers.IO) { apiUsuario.getUsers() }
-                    val usuario = usuarios.find { it.email.equals(emailDigitado, ignoreCase = true) }
+                    val loginRequest = LoginRequest(
+                        email = emailDigitado,
+                        senha = senhaDigitado
+                    )
 
-                    if (usuario == null) {
-                        emailLayout.error = "Email não encontrado"
-                        continuar.isEnabled = true
-                        return@launch
+                    val response = withContext(Dispatchers.IO) {
+                        apiUsuario.loginFuncionario(loginRequest)
                     }
 
-                    // 2️⃣ Tenta autenticar no Firebase
-                    auth.signInWithEmailAndPassword(emailDigitado, senhaDigitado)
-                        .addOnCompleteListener { task ->
-                            continuar.isEnabled = true
-                            if (task.isSuccessful) {
-                                // Recupera usuário da API
-                                val usuario = usuarios.find { it.email.equals(emailDigitado, ignoreCase = true) }
+                    if (response.isSuccessful && response.body() != null) {
+                        val funcionario = response.body()!!
 
-                                if (usuario != null) {
-                                    // Passa o objeto completo para a MainActivity
-                                    val intent = Intent(this@Login, MainActivity::class.java)
-                                    intent.putExtra("fragmentToLoad", "HomeFragment")
-                                    intent.putExtra("user", usuario)
-                                    startActivity(intent)
-                                    finish()
-                                } else {
-                                    emailLayout.error = "Usuário não encontrado"
-                                }
-
-                            } else {
-                                senhaLayout.error = "Senha incorreta"
-                            }
-                        }
-
+                        val intent = Intent(this@Login, MainActivity::class.java)
+                        intent.putExtra("fragmentToLoad", "HomeFragment")
+                        intent.putExtra("token", funcionario.token)
+                        intent.putExtra("nome", funcionario.nome)
+                        intent.putExtra("cracha", funcionario.numeroCracha)
+                        startActivity(intent)
+                        finish()
+                    } else if (response.code() == 401) {
+                        senhaLayout.error = "Email ou senha incorretos"
+                    } else {
+                        senhaLayout.error = "Erro ao validar funcionário na API"
+                    }
 
                 } catch (e: Exception) {
                     e.printStackTrace()
-                    emailLayout.error = "Erro ao consultar a API"
+                    Toast.makeText(this@Login, "Erro de conexão com a API", Toast.LENGTH_SHORT).show()
+                } finally {
                     continuar.isEnabled = true
                 }
             }
         }
 
+        // Primeiro acesso → direciona para a tela de cadastro inicial
         primeiroAcesso.setOnClickListener {
-            val intent = Intent(this, Primeiro_acesso::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, Primeiro_acesso::class.java))
         }
 
+        // Redefinir senha → direciona para a tela de redefinir senha
         redefinirSenha.setOnClickListener {
-            val intent = Intent(this, Redefinir_senha::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, Redefinir_senha::class.java))
         }
     }
 }
