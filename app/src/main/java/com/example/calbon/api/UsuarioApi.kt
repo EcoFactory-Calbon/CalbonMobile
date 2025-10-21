@@ -1,5 +1,6 @@
 package com.example.calbon.api
 
+import DefinirSenhaRequest
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -30,7 +31,7 @@ interface UsuarioApi {
         ): Response<Usuario>
 
         //login
-        @POST("/auth/admin/login")
+        @POST("/auth/funcionario/login")
         suspend fun loginFuncionario(
                 @Body request: LoginRequest
         ): Response<LoginResponse>
@@ -40,4 +41,11 @@ interface UsuarioApi {
         suspend fun primeiroAcesso(
                 @Body request: PrimeiroAcessoRequest
         ): Response<PrimeiroAcessoResponse>
+
+        @PUT("/funcionario/primeiroAcesso/definirSenha/{numeroCracha}")
+        suspend fun definirSenha(
+                @Path("numeroCracha") numeroCracha: Int,
+                @Body request: DefinirSenhaRequest
+        ): Response<Void>
+
 }

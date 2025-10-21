@@ -2,8 +2,10 @@ package com.example.calbon
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -19,6 +21,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class Primeiro_acesso : AppCompatActivity() {
+
+    private lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +41,7 @@ class Primeiro_acesso : AppCompatActivity() {
         val codigoEmpresaLayout = findViewById<TextInputLayout>(R.id.InputCódigoEmpresa)
         val continuar = findViewById<Button>(R.id.continuar)
         val login = findViewById<TextView>(R.id.login)
+        progressBar = findViewById(R.id.progressBar)
 
         voltar.setOnClickListener { finish() }
 
@@ -68,6 +73,8 @@ class Primeiro_acesso : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            // Mostra progressBar e desabilita botão
+            progressBar.visibility = View.VISIBLE
             continuar.isEnabled = false
 
             // Chamada à API para validar primeiro acesso
@@ -76,7 +83,6 @@ class Primeiro_acesso : AppCompatActivity() {
                     val request = PrimeiroAcessoRequest(
                         email = email,
                         numeroCracha = cracha,
-                        codigoEmpresa = codigoEmpresa
                     )
 
                     val response = withContext(Dispatchers.IO) {
@@ -109,10 +115,11 @@ class Primeiro_acesso : AppCompatActivity() {
                     e.printStackTrace()
                     Toast.makeText(
                         this@Primeiro_acesso,
-                        "Erro ao consultar a API",
+                        "Erro",
                         Toast.LENGTH_SHORT
                     ).show()
                 } finally {
+                    progressBar.visibility = View.GONE
                     continuar.isEnabled = true
                 }
             }
