@@ -9,11 +9,12 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.graphics.Insets
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
-import com.example.calbon.api.RetrofitClient.apiUsuario
+import com.example.calbon.api.RetrofitClient.getApiUsuario
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
@@ -73,7 +74,7 @@ class DefinirSenha : AppCompatActivity() {
                     val request = DefinirSenhaRequest(senha)
 
                     val response = withContext(Dispatchers.IO) {
-                        apiUsuario.definirSenha(numeroCracha, request)
+                        getApiUsuario(this@DefinirSenha).definirSenha(numeroCracha, request)
                     }
 
                     if (response.isSuccessful) {

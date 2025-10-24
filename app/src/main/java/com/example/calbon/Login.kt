@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -14,7 +15,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.calbon.api.LoginRequest
-import com.example.calbon.api.RetrofitClient.apiUsuario
+import com.example.calbon.api.RetrofitClient
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,14 +28,6 @@ class Login : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_login)
 
-        // Ajuste de padding com insets
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
-
-        // Views
         val emailLayout = findViewById<TextInputLayout>(R.id.InputEmail)
         val senhaLayout = findViewById<TextInputLayout>(R.id.InputSenha)
         val voltar = findViewById<ImageView>(R.id.voltarRedefinirSenha)
@@ -45,10 +38,8 @@ class Login : AppCompatActivity() {
         emailLayout.defaultHintTextColor = ColorStateList.valueOf(Color.WHITE)
         senhaLayout.defaultHintTextColor = ColorStateList.valueOf(Color.WHITE)
 
-        // Botão voltar
         voltar.setOnClickListener { finish() }
 
-        // Botão continuar → login normal via API
         continuar.setOnClickListener {
             val emailDigitado = emailLayout.editText?.text.toString().trim()
             val senhaDigitado = senhaLayout.editText?.text.toString().trim()
@@ -56,42 +47,49 @@ class Login : AppCompatActivity() {
             emailLayout.error = null
             senhaLayout.error = null
 
-            if (emailDigitado.isEmpty()) {
-                emailLayout.error = "Preencha o email"
-                return@setOnClickListener
-            }
-            if (senhaDigitado.isEmpty()) {
-                senhaLayout.error = "Preencha a senha"
-                return@setOnClickListener
-            }
+            if (emailDigitado.isEmpty()) { emailLayout.error = "Preencha o email"; return@setOnClickListener }
+            if (senhaDigitado.isEmpty()) { senhaLayout.error = "Preencha a senha"; return@setOnClickListener }
 
             continuar.isEnabled = false
 
             lifecycleScope.launch {
                 try {
-                    val loginRequest = LoginRequest(
-                        email = emailDigitado,
-                        senha = senhaDigitado
-                    )
+                    val loginRequest = LoginRequest(emailDigitado, senhaDigitado)
 
                     val response = withContext(Dispatchers.IO) {
-                        apiUsuario.loginFuncionario(loginRequest)
+                        RetrofitClient.getApiUsuarioSemAuth().loginFuncionario(loginRequest)
                     }
 
-                    if (response.isSuccessful && response.body() != null) {
-                        val funcionario = response.body()!!
+                    withContext(Dispatchers.Main) {
+                        if (response.isSuccessful && response.body() != null) {
+                            val funcionario = response.body()!!
 
-                        val intent = Intent(this@Login, MainActivity::class.java)
-                        intent.putExtra("fragmentToLoad", "HomeFragment")
-                        intent.putExtra("token", funcionario.token)
-                        intent.putExtra("nome", funcionario.nome)
-                        intent.putExtra("cracha", funcionario.numeroCracha)
-                        startActivity(intent)
-                        finish()
-                    } else if (response.code() == 401) {
-                        senhaLayout.error = "Email ou senha incorretos"
-                    } else {
-                        senhaLayout.error = "Erro ao validar funcionário na API"
+                            // Salva token e crachá em SharedPreferences
+                            val prefs = getSharedPreferences("APP_PREFS", MODE_PRIVATE)
+                            prefs.edit()
+                                .putString("TOKEN", funcionario.token)
+                                .putInt("NUMERO_CRACHA", funcionario.numeroCracha)
+                                .putString("SENHA_REAL", senhaDigitado)
+                                .apply()
+
+
+                            Toast.makeText(
+                                this@Login,
+                                "Bem-vindo, ${funcionario.nome}!",
+                                Toast.LENGTH_LONG
+                            ).show()
+
+                            // Vai para MainActivity
+                            startActivity(Intent(this@Login, MainActivity::class.java))
+                            finish()
+                        } else if (response.code() == 401) {
+                            senhaLayout.error = "Email ou senha incorretos"
+                        } else {
+                            senhaLayout.error = "Erro ao validar funcionário na API"
+                        }
+
+                        Log.d("API_LOGIN", "Código: ${response.code()}")
+                        Log.d("API_LOGIN", "Corpo: ${response.errorBody()?.string()}")
                     }
 
                 } catch (e: Exception) {
@@ -103,12 +101,9 @@ class Login : AppCompatActivity() {
             }
         }
 
-        // Primeiro acesso → direciona para a tela de cadastro inicial
         primeiroAcesso.setOnClickListener {
             startActivity(Intent(this, Primeiro_acesso::class.java))
         }
-
-        // Redefinir senha → direciona para a tela de redefinir senha
         redefinirSenha.setOnClickListener {
             startActivity(Intent(this, Redefinir_senha::class.java))
         }

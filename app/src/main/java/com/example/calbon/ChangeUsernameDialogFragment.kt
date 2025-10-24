@@ -2,6 +2,7 @@ package com.example.calbon
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,17 +16,19 @@ import com.example.calbon.api.RetrofitClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import retrofit2.Response
 
 class ChangeUsernameDialogFragment : DialogFragment() {
 
     private lateinit var listener: ChangeUsernameDialogListener
+    private val TAG = "ChangeUsernameDialog"
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
             listener = context as ChangeUsernameDialogListener
         } catch (e: ClassCastException) {
-            // Tratamento de erro se a Activity/Fragment não implementar a interface
+            Log.e(TAG, "Activity não implementa ChangeUsernameDialogListener", e)
         }
     }
 
@@ -41,12 +44,16 @@ class ChangeUsernameDialogFragment : DialogFragment() {
         val titleTextView = view.findViewById<TextView>(R.id.Title)
         val subtitleTextView = view.findViewById<TextView>(R.id.SubTitle)
 
-        // Lê os argumentos passados da Activity
         val title = arguments?.getString("title")
         val subtitle = arguments?.getString("subtitle")
-        val field = arguments?.getString("field") // qual campo será atualizado
+        val field = arguments?.getString("field")
+        if (field == "senha") {
+            val prefs = requireContext().getSharedPreferences("APP_PREFS", Context.MODE_PRIVATE)
+            val senhaAtual = prefs.getString("SENHA_REAL", "") ?: ""
+            editText.setText(senhaAtual)
+        }
 
-        // Atualiza título e subtítulo
+
         titleTextView.text = title
         subtitleTextView.text = subtitle
         editText.hint = title
@@ -61,33 +68,40 @@ class ChangeUsernameDialogFragment : DialogFragment() {
             val token = arguments?.getString("token") ?: ""
             val userId = arguments?.getLong("userId") ?: 0L
 
-            if (newValue.isNotEmpty()) {
-                if (token.isNotEmpty() && userId != 0L) {
-                    // Chamada para atualizar no servidor
-                    lifecycleScope.launch {
-                        try {
-                            val map = mapOf(field!! to newValue)
-                            val resposta = withContext(Dispatchers.IO) {
-                                RetrofitClient.apiUsuario.atualizarUsuario("Bearer $token", userId, map)
-                            }
-                            if (resposta.isSuccessful) {
-                                listener.onFieldChanged(field, newValue)
-                                dismiss()
-                            } else {
-                                editText.error = "Erro ${resposta.code()} ao atualizar"
-                            }
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                            editText.error = "Falha na conexão"
+            if (newValue.isEmpty()) {
+                editText.error = "Por favor, digite um valor."
+                return@setOnClickListener
+            }
+
+            val map: Map<String, Any> = mapOf(field!! to newValue as Any)
+            Log.d(TAG, "Map de atualização: $map")
+
+            if (token.isNotEmpty() && userId != 0L) {
+                lifecycleScope.launch {
+                    try {
+                        Log.d(TAG, "Iniciando chamada de atualização no servidor...")
+                        val resposta: Response<Void> = withContext(Dispatchers.IO) {
+                            RetrofitClient.getApiUsuario(requireContext()).atualizarPerfil(map)
                         }
+                        if (resposta.isSuccessful) {
+                            Log.d(TAG, "Perfil atualizado com sucesso: ${resposta.code()}")
+                            listener.onFieldChanged(field, newValue)
+                            dismiss()
+                        } else {
+                            val erro = resposta.errorBody()?.string()
+                            Log.e(TAG, "Erro ao atualizar perfil: $erro")
+                            editText.error = "Erro ${resposta.code()} ao atualizar"
+                        }
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Exceção ao atualizar perfil", e)
+                        editText.error = "Falha na conexão"
                     }
-                } else {
-                    // fallback: apenas atualiza local
-                    listener.onFieldChanged(field ?: "", newValue)
-                    dismiss()
                 }
             } else {
-                editText.error = "Por favor, digite um valor."
+                // Atualização local como fallback
+                Log.d(TAG, "Atualização local (fallback) para $field: $newValue")
+                listener.onFieldChanged(field, newValue)
+                dismiss()
             }
         }
 
@@ -95,10 +109,8 @@ class ChangeUsernameDialogFragment : DialogFragment() {
         return view
     }
 
-
     override fun onStart() {
         super.onStart()
-        // Define a largura do diálogo para ocupar quase toda a tela
         dialog?.window?.setLayout(
             (resources.displayMetrics.widthPixels * 0.9).toInt(),
             ViewGroup.LayoutParams.WRAP_CONTENT

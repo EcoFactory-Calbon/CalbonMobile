@@ -6,46 +6,37 @@ import retrofit2.http.*
 
 interface UsuarioApi {
 
-        // Retorna todos os usuários (teste)
-        @GET("joycenick/ApiTestNoticias/main/usuario.json")
-        suspend fun getUsers(): List<Usuario>
-
-        // Buscar usuário por crachá
+        // Buscar usuário pelo número do crachá
         @GET("funcionario/buscarCracha/{cracha}")
-        suspend fun buscarPorCracha(
-                @Path("cracha") cracha: Int
-        ): Response<Usuario>
+        suspend fun buscarPorCracha(@Path("cracha") cracha: Int): Response<List<Usuario>>
 
-        // Buscar usuários por empresa
-        @GET("funcionario/buscarEmpresa/{id}")
-        suspend fun buscarPorEmpresa(
-                @Path("id") idEmpresa: Int
-        ): Response<List<UsuarioDetalhe>>
+        // Atualizar parcialmente o perfil do próprio usuário autenticado
 
-        // Atualizar parcialmente um usuário
+                @PATCH("funcionario/AtualizarPerfil")
+                suspend fun atualizarPerfil(
+                        @Body campos: Map<String, @JvmSuppressWildcards Any>
+                ): Response<Void>
+
+
+        // Atualizar qualquer usuário (requer token JWT)
         @PATCH("funcionario/atualizar/{id}")
         suspend fun atualizarUsuario(
-                @Header("Authorization") token: String, // token JWT
+                @Header("Authorization") token: String,
                 @Path("id") id: Long,
                 @Body camposAtualizados: Map<String, Any>
         ): Response<Usuario>
 
-        //login
-        @POST("/auth/funcionario/login")
-        suspend fun loginFuncionario(
-                @Body request: LoginRequest
-        ): Response<LoginResponse>
+        // Login
+        @POST("auth/funcionario/login")
+        suspend fun loginFuncionario(@Body request: LoginRequest): Response<LoginResponse>
 
-        //primeiro acesso
+        // Primeiro acesso
         @POST("funcionario/primeiroAcesso")
-        suspend fun primeiroAcesso(
-                @Body request: PrimeiroAcessoRequest
-        ): Response<PrimeiroAcessoResponse>
+        suspend fun primeiroAcesso(@Body request: PrimeiroAcessoRequest): Response<PrimeiroAcessoResponse>
 
-        @PUT("/funcionario/primeiroAcesso/definirSenha/{numeroCracha}")
+        @PUT("funcionario/primeiroAcesso/definirSenha/{numeroCracha}")
         suspend fun definirSenha(
                 @Path("numeroCracha") numeroCracha: Int,
                 @Body request: DefinirSenhaRequest
         ): Response<Void>
-
 }
