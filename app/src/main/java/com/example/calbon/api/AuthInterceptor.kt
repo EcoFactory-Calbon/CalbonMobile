@@ -21,4 +21,5 @@ class AuthInterceptor(private val context: Context) : Interceptor {
 
         return chain.proceed(requestBuilder.build())
     }
+
 }
