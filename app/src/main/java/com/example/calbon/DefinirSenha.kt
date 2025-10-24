@@ -1,19 +1,29 @@
 package com.example.calbon
 
+import DefinirSenhaRequest
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.graphics.Insets
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
+import com.example.calbon.api.RetrofitClient.getApiUsuario
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class DefinirSenha : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
+    private lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,9 +37,10 @@ class DefinirSenha : AppCompatActivity() {
         }
 
         auth = FirebaseAuth.getInstance()
+        progressBar = findViewById(R.id.progressBar)
 
         // Recebe os dados do Primeiro_acesso
-        val emailUsuario = intent.getStringExtra("emailUsuario") ?: ""
+        val emailUsuario = intent.getStringExtra("email") ?: ""
         val nome = intent.getStringExtra("nome") ?: ""
         val sobrenome = intent.getStringExtra("sobrenome") ?: ""
         val numeroCracha = intent.getIntExtra("numeroCracha", 0)
@@ -41,8 +52,8 @@ class DefinirSenha : AppCompatActivity() {
         val confirmarSenhaLayout = findViewById<TextInputLayout>(R.id.InputConfirmarSenha)
 
         finalizar.setOnClickListener {
-            val senha = senhaLayout.editText?.text.toString()
-            val confirmarSenha = confirmarSenhaLayout.editText?.text.toString()
+            val senha = senhaLayout.editText?.text?.toString()?.trim() ?: ""
+            val confirmarSenha = confirmarSenhaLayout.editText?.text?.toString()?.trim() ?: ""
 
             if (senha.isEmpty() || confirmarSenha.isEmpty()) {
                 Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_SHORT).show()
@@ -54,24 +65,58 @@ class DefinirSenha : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Criar usuário no Firebase com e-mail e senha
-            auth.createUserWithEmailAndPassword(emailUsuario, senha)
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        Toast.makeText(this, "Cadastro realizado com sucesso!", Toast.LENGTH_SHORT).show()
+            // Mostra progress bar e desabilita botão
+            progressBar.visibility = View.VISIBLE
+            finalizar.isEnabled = false
 
-                        // Aqui você pode salvar outros dados do usuário em Firestore ou Realtime Database, se necessário
-                        // Ex: nome, sobrenome, crachá, cargo, localização
-                        // FirebaseDatabase.getInstance().getReference("usuarios").child(auth.currentUser.uid).setValue(usuario)
+            lifecycleScope.launch {
+                try {
+                    val request = DefinirSenhaRequest(senha)
 
-                        // Volta para login
-                        val intent = Intent(this, Login::class.java)
+                    val response = withContext(Dispatchers.IO) {
+                        getApiUsuario(this@DefinirSenha).definirSenha(numeroCracha, request)
+                    }
+
+                    if (response.isSuccessful) {
+                        Toast.makeText(
+                            this@DefinirSenha,
+                            "Senha definida com sucesso!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        // Cria usuário no Firebase (para autenticação futura)
+                        withContext(Dispatchers.IO) {
+                            auth.createUserWithEmailAndPassword(emailUsuario, senha)
+                        }
+
+                        // Vai para tela de login
+                        val intent = Intent(this@DefinirSenha, Login::class.java)
                         startActivity(intent)
                         finish()
+
                     } else {
-                        Toast.makeText(this, "Erro ao cadastrar: ${task.exception?.message}", Toast.LENGTH_LONG).show()
+                        val errorBody = response.errorBody()?.string()
+                        Toast.makeText(
+                            this@DefinirSenha,
+                            "Erro ao definir senha: ${response.code()}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        android.util.Log.e("API_ERROR", "Erro ${response.code()} - Corpo: $errorBody")
                     }
+
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    Toast.makeText(
+                        this@DefinirSenha,
+                        "Erro de conexão com a API",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } finally {
+                    progressBar.visibility = View.GONE
+                    finalizar.isEnabled = true
                 }
+            }
         }
     }
 }

@@ -1,10 +1,7 @@
 package com.example.calbon
 
 import android.os.Bundle
-import android.widget.ImageView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -27,15 +24,7 @@ class MainActivity : AppCompatActivity() {
         fab = findViewById(R.id.fab)
         navView = findViewById(R.id.nav_view)
 
-        val headerView = navView.getHeaderView(0)
-        val closeBtn = headerView.findViewById<ImageView>(R.id.nav_close_button)
-
-        // Clique no botão X para fechar
-        closeBtn.setOnClickListener {
-            drawerLayout.closeDrawer(GravityCompat.END)
-        }
-
-        fab.hide() // opcional
+        fab.hide()
         fab.isClickable = false
 
         setupBottomNavigation()
@@ -50,7 +39,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupBottomNavigation() {
         bottomNavigation.setOnItemSelectedListener { item ->
-            val fragment: Fragment = when(item.itemId){
+            val fragment: Fragment = when (item.itemId) {
                 R.id.home -> HomeFragment()
                 R.id.relatorio -> RelatorioFragment()
                 R.id.formulario -> FormularioFragment()
@@ -64,22 +53,18 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupDrawerMenu() {
         navView.setNavigationItemSelectedListener { menuItem ->
-            when(menuItem.itemId){
+            when (menuItem.itemId) {
                 R.id.nav_home -> replaceFragment(HomeFragment())
                 R.id.nav_dashboard -> replaceFragment(RelatorioFragment())
                 R.id.nav_form -> replaceFragment(FormularioFragment())
                 R.id.nav_profile -> replaceFragment(PerfilFragment())
-                R.id.nav_terms -> Toast.makeText(this, "Termos e Políticas", Toast.LENGTH_SHORT).show()
-                R.id.nav_help -> Toast.makeText(this, "Central de Ajuda", Toast.LENGTH_SHORT).show()
+                R.id.nav_terms -> {} // implementar
+                R.id.nav_help -> {} // implementar
                 R.id.nav_settings -> replaceFragment(ConfiguracaoFragment())
             }
-            drawerLayout.closeDrawer(GravityCompat.END)
+            drawerLayout.closeDrawer(androidx.core.view.GravityCompat.END)
             true
         }
-    }
-
-    fun openDrawerFromFragment() {
-        drawerLayout.openDrawer(GravityCompat.END)
     }
 
     private fun replaceFragment(fragment: Fragment) {
@@ -88,11 +73,8 @@ class MainActivity : AppCompatActivity() {
             .commit()
     }
 
-    override fun onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.END)) {
-            drawerLayout.closeDrawer(GravityCompat.END)
-        } else {
-            super.onBackPressed()
-        }
+    // 🔹 Método para abrir o drawer a partir de um Fragment
+    fun openDrawerFromFragment() {
+        drawerLayout.openDrawer(androidx.core.view.GravityCompat.END)
     }
 }
