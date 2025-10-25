@@ -7,15 +7,16 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope // Importação correta
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.calbon.adapter.LinksAdapter
-import com.example.calbon.api.RetrofitClient
-import com.example.calbon.model.LinkItem
-import kotlinx.coroutines.CoroutineScope
+import com.example.calbon.retrofit.RetrofitRedisClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+
+
 class HomeFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
@@ -30,16 +31,18 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // RecyclerView
+        // 1. Configuração da única RecyclerView (CardsRecycleViewHome)
         recyclerView = view.findViewById(R.id.CardsRecycleViewHome)
+        // Usar context dentro de onViewCreated é seguro
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         adapter = LinksAdapter { item ->
-            val pos = (0 until adapter.itemCount).firstOrNull { adapter.getItem(it).id == item.id }
+            val pos = (0 until adapter.itemCount).firstOrNull { adapter.getItem(it).link == item.link }
             pos?.let { adapter.notifyItemChanged(it) }
         }
         recyclerView.adapter = adapter
 
-        fetchLinks()
+        // 2. Chama a única função de busca necessária
+        fetchNoticias()
 
         // Configuração para abrir drawer
         val configuracao: ImageView = view.findViewById(R.id.configuracao)
@@ -48,18 +51,25 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun fetchLinks() {
-        CoroutineScope(Dispatchers.IO).launch {
+    private fun fetchNoticias() {
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             try {
-                //val links: List<LinkItem> = RetrofitClient.apiNoticias.getLinks()
-                //withContext(Dispatchers.Main) { adapter.setItems(links) }
+                val listaNoticias = RetrofitRedisClient.api.listarNoticias()
+
+                withContext(Dispatchers.Main) {
+                    if (isAdded) {
+                        adapter.setItems(listaNoticias)
+                    }
+                }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
+                   if (isAdded) {
+                        Toast.makeText(context, "Erro ao carregar notícias: ${e.message}", Toast.LENGTH_LONG).show()
+                    }
                     e.printStackTrace()
-                    Toast.makeText(requireContext(), "Erro ao carregar links: ${e.message}", Toast.LENGTH_LONG).show()
                 }
             }
         }
     }
-}
 
+}
