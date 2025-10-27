@@ -17,12 +17,15 @@ import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import android.widget.ProgressBar
+
 
 class PerfilFragment : Fragment() {
 
     private lateinit var nomeTextView: TextView
     private lateinit var emailTextView: TextView
-    private var numeroCracha: Int = -1 // armazenar o crachá
+    private var numeroCracha: Int = -1
+    private lateinit var progressBar: ProgressBar
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_perfil, container, false)
@@ -37,6 +40,8 @@ class PerfilFragment : Fragment() {
         // Configura ViewPager2 e TabLayout
         val viewPager: ViewPager2 = view.findViewById(R.id.view_pager)
         val tabLayout: TabLayout = view.findViewById(R.id.tab_layout)
+        progressBar = view.findViewById(R.id.progressBar)
+
         viewPager.adapter = PerfilPagerAdapter(this)
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = if (position == 0) "Posts salvos" else "Configurações"
@@ -55,6 +60,8 @@ class PerfilFragment : Fragment() {
     }
 
     private fun buscarDadosUsuario(numeroCracha: Int) {
+        progressBar.visibility = View.VISIBLE
+
         val api = RetrofitClient.getApiUsuario(requireContext())
         lifecycleScope.launch {
             try {
@@ -79,6 +86,8 @@ class PerfilFragment : Fragment() {
             } catch (e: Exception) {
                 nomeTextView.text = "Erro de conexão"
                 emailTextView.text = "Erro de conexão"
+            } finally {
+                progressBar.visibility = View.GONE
             }
         }
     }
