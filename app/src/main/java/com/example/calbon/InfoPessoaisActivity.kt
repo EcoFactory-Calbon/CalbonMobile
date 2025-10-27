@@ -2,6 +2,7 @@ package com.example.calbon
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -16,6 +17,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Response
+import android.widget.ProgressBar
+import com.example.calbon.utils.NotificationUtils
+
 
 class InfoPessoaisActivity : AppCompatActivity(), ChangeUsernameDialogListener {
 
@@ -26,6 +30,8 @@ class InfoPessoaisActivity : AppCompatActivity(), ChangeUsernameDialogListener {
     private lateinit var senha: TextView
     private lateinit var num_cracha: TextView
     private lateinit var cod_empresa: TextView
+    private lateinit var progressBar: ProgressBar
+
 
     companion object {
         private const val TAG = "InfoPessoaisActivity"
@@ -33,6 +39,7 @@ class InfoPessoaisActivity : AppCompatActivity(), ChangeUsernameDialogListener {
 
     private fun showChangeDialog(title: String, subtitle: String, field: String) {
         val dialog = ChangeUsernameDialogFragment()
+
         val bundle = Bundle().apply {
             putString("title", title)
             putString("subtitle", subtitle)
@@ -48,6 +55,7 @@ class InfoPessoaisActivity : AppCompatActivity(), ChangeUsernameDialogListener {
         setContentView(R.layout.activity_info_pessoais)
         val prefs = getSharedPreferences("APP_PREFS", MODE_PRIVATE)
         val senhaReal = prefs.getString("SENHA_REAL", "") ?: ""
+        progressBar = findViewById(R.id.progressBar)
 
         nome_info = findViewById(R.id.nome_info)
         nome_completo = findViewById(R.id.nome_completo)
@@ -62,7 +70,11 @@ class InfoPessoaisActivity : AppCompatActivity(), ChangeUsernameDialogListener {
         val voltar = findViewById<ImageView>(R.id.voltar)
 
         editar_nome.setOnClickListener {
-            showChangeDialog("Alterar Nome Completo", nome_completo.text.toString(), "nome_completo")
+            showChangeDialog(
+                "Alterar Nome Completo",
+                nome_completo.text.toString(),
+                "nome_completo"
+            )
         }
 
         editar_senha.setOnClickListener {
@@ -77,6 +89,8 @@ class InfoPessoaisActivity : AppCompatActivity(), ChangeUsernameDialogListener {
     }
 
     private fun buscarUsuario(cracha: Int) {
+        progressBar.visibility = View.VISIBLE
+
         val api = RetrofitClient.getApiUsuario(this)
         lifecycleScope.launch {
             try {
@@ -89,6 +103,8 @@ class InfoPessoaisActivity : AppCompatActivity(), ChangeUsernameDialogListener {
             } catch (e: Exception) {
                 Log.e(TAG, "Erro na requisição", e)
                 mostrarErro()
+            } finally {
+                progressBar.visibility = View.GONE
             }
         }
     }
@@ -133,10 +149,12 @@ class InfoPessoaisActivity : AppCompatActivity(), ChangeUsernameDialogListener {
                 nome_info.text = newValue
                 nome_completo.text = newValue
             }
+
             "email" -> {
                 email.text = newValue
                 email_info.text = newValue
             }
+
             "senha" -> {
                 senha.text = "********"
             }
@@ -165,11 +183,34 @@ class InfoPessoaisActivity : AppCompatActivity(), ChangeUsernameDialogListener {
     private fun atualizarPerfil(atualizacao: AtualizacaoPerfil) {
         val api = RetrofitClient.getApiUsuario(this)
         val camposMap = atualizacao.toMap()
+
         lifecycleScope.launch {
             try {
-                val resposta: Response<Void> = withContext(Dispatchers.IO) { api.atualizarPerfil(camposMap) }
-                if (resposta.isSuccessful) Log.d(TAG, "Perfil atualizado com sucesso")
-                else Log.e(TAG, "Erro ao atualizar perfil: ${resposta.errorBody()?.string()}")
+                val resposta: Response<Void> =
+                    withContext(Dispatchers.IO) { api.atualizarPerfil(camposMap) }
+
+                if (resposta.isSuccessful) {
+                    Log.d(TAG, "Perfil atualizado com sucesso")
+
+                    // Pega o número do crachá do usuário logado
+                    val prefs = getSharedPreferences("APP_PREFS", MODE_PRIVATE)
+                    val numeroCracha = prefs.getInt("NUMERO_CRACHA", -1)
+
+                    if (numeroCracha != -1) {
+                        NotificationUtils.sendNotification(
+                            this@InfoPessoaisActivity,
+                            numeroCracha,
+                            "Perfil atualizado",
+                            "Suas informações foram alteradas com sucesso"
+                        )
+                    } else {
+                        Log.e(TAG, "Número do crachá não encontrado para enviar notificação")
+                    }
+
+                } else {
+                    Log.e(TAG, "Erro ao atualizar perfil: ${resposta.errorBody()?.string()}")
+                }
+
             } catch (e: Exception) {
                 Log.e(TAG, "Exceção ao atualizar perfil", e)
             }

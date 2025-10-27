@@ -2,13 +2,16 @@ package com.example.calbon
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import android.widget.ProgressBar
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.calbon.databinding.ActivityPrimeiraTelaBinding
 
 class PrimeiraTela : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -18,6 +21,7 @@ class PrimeiraTela : AppCompatActivity() {
 
         binding = ActivityPrimeiraTelaBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
 
         //ir para login
         binding.buttonLogin.setOnClickListener {

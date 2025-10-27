@@ -18,12 +18,11 @@
 
         <View
             android:id="@+id/view"
-            android:layout_width="428dp"
+            android:layout_width="950dp"
             android:layout_height="2dp"
             android:layout_marginTop="72dp"
             android:background="#5FBCDB"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.51"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
