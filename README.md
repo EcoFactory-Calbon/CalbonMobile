@@ -36,4 +36,4 @@ Siga os passos abaixo para executar o **CalbonMobile** localmente em sua máquin
 Abra o terminal e execute:
 
 ```bash
-git clone https://github.com/seu-usuario/CalbonMobile.git
+git clone https://github.com/EcoFactory-Calbon/CalbonMobile.git
