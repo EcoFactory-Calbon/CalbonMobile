@@ -24,18 +24,15 @@ class ConfiguracaoFragment : Fragment() {
         val infoPerfilButton = view.findViewById<Button>(R.id.infoPerfil)
         val sairButton = view.findViewById<Button>(R.id.sair)
 
-        // Acessa SharedPreferences
+        // Acessa SharedPreferences para pegar o número do crachá
         val prefs = requireActivity().getSharedPreferences("APP_PREFS", AppCompatActivity.MODE_PRIVATE)
+        numeroCracha = prefs.getInt("NUMERO_CRACHA", -1)
 
         // Botão de notificações
         notificacao.setOnClickListener {
             val intent = Intent(activity, NotificacoesActivity::class.java)
             startActivity(intent)
         }
-
-        // Recebe o número do crachá do PerfilFragment
-        val parentFragment = parentFragment as? PerfilFragment
-        numeroCracha = parentFragment?.getNumeroCracha() ?: -1
 
         // Botão de informações pessoais
         infoPerfilButton.setOnClickListener {
@@ -44,6 +41,7 @@ class ConfiguracaoFragment : Fragment() {
             startActivity(intent)
         }
 
+        // Botão sair
         sairButton.setOnClickListener {
             AlertDialog.Builder(requireContext())
                 .setTitle("Sair da conta")

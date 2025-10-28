@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-  <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto"
-      xmlns:tools="http://schemas.android.com/tools"
-      android:id="@+id/main"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:padding="16dp"
-      tools:context=".InfoPessoaisActivity">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".InfoPessoaisActivity">
 
   <TextView
       android:id="@+id/textView7"
@@ -20,16 +19,16 @@
       app:layout_constraintStart_toStartOf="parent" />
 
   <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/imageView"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/circle_border"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearanceOverlay="@style/CircleImage"
-        tools:src="@tools:sample/avatars" />
+      android:id="@+id/imageView"
+      android:layout_width="96dp"
+      android:layout_height="96dp"
+      android:layout_marginTop="40dp"
+      android:background="@drawable/circle_border"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:shapeAppearanceOverlay="@style/CircleImage"
+      tools:src="@tools:sample/avatars" />
 
   <TextView
       android:id="@+id/nome_info"
@@ -70,22 +69,21 @@
       android:layout_marginTop="36dp"
       android:background="@drawable/border"
       android:gravity=""
-      android:textSize="16dp"
+      android:textSize="16sp"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/email_info" />
 
-    <ImageView
-        android:id="@+id/editar_nome"
-        android:layout_width="31dp"
-        android:layout_height="38dp"
-        android:layout_marginTop="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.953"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/nome_completo"
-        app:srcCompat="@drawable/icone_editar" />
-
+  <ImageView
+      android:id="@+id/editar_nome"
+      android:layout_width="31dp"
+      android:layout_height="38dp"
+      android:layout_marginTop="4dp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.953"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="@+id/nome_completo"
+      app:srcCompat="@drawable/icone_editar" />
 
   <TextView
       android:id="@+id/email"
@@ -94,7 +92,7 @@
       android:layout_marginTop="44dp"
       android:background="@drawable/border"
       android:gravity=""
-      android:textSize="16dp"
+      android:textSize="16sp"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="0.545"
       app:layout_constraintStart_toStartOf="parent"
@@ -107,7 +105,7 @@
       android:layout_marginTop="28dp"
       android:background="@drawable/border"
       android:gravity=""
-      android:textSize="16dp"
+      android:textSize="16sp"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="0.515"
       app:layout_constraintStart_toStartOf="parent"
@@ -127,15 +125,15 @@
       app:layout_constraintVertical_bias="1.0" />
 
   <ImageView
-        android:id="@+id/editar_senha"
-        android:layout_width="30dp"
-        android:layout_height="38dp"
-        android:layout_marginTop="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.953"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/senha"
-        app:srcCompat="@drawable/icone_editar" />
+      android:id="@+id/editar_senha"
+      android:layout_width="30dp"
+      android:layout_height="38dp"
+      android:layout_marginTop="4dp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.953"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="@+id/senha"
+      app:srcCompat="@drawable/icone_editar" />
 
   <TextView
       android:id="@+id/num_cracha"
@@ -144,7 +142,7 @@
       android:layout_marginTop="36dp"
       android:background="@drawable/border"
       android:gravity=""
-      android:textSize="16dp"
+      android:textSize="16sp"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/senha" />
@@ -156,7 +154,7 @@
       android:layout_marginTop="36dp"
       android:background="@drawable/border"
       android:gravity=""
-      android:textSize="16dp"
+      android:textSize="16sp"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/num_cracha" />
@@ -193,7 +191,8 @@
       app:layout_constraintBottom_toTopOf="@+id/num_cracha"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="0.056"
-      app:layout_constraintStart_toStartOf="parent" />]
+      app:layout_constraintStart_toStartOf="parent" />
+
   <ProgressBar
       android:id="@+id/progressBar"
       style="?android:attr/progressBarStyleLarge"
@@ -204,6 +203,6 @@
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"/>
+      app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
