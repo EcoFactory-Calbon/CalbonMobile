@@ -11,5 +11,6 @@ data class Usuario(
     val email: String,
     val is_gestor: Boolean,
     val id_Cargo: Int,
-    val id_Localizacao: Int
+    val id_Localizacao: Int,
+    val fotoUrl: String
 ) : Parcelable

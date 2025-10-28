@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <cloudinary>
+        <cloud_name>dzdamwbma</cloud_name>
+        <api_key>888539645355774</api_key>
+        <api_secret>n0RxqK6bmOEmknm8gJ1LPm62-gY</api_secret>
+    </cloudinary>
+</PreferenceScreen>
