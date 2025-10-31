@@ -22,7 +22,7 @@ class PostSalvoFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: LinksAdapter
-    private var fetchJob: Job? = null // evita chamadas duplicadas
+    private var fetchJob: Job? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,10 +33,12 @@ class PostSalvoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Nota: É seguro usar requireContext() aqui, pois onViewCreated só é chamado
+        // quando o Fragment está anexado.
         recyclerView = view.findViewById(R.id.CardsRecycleViewHome)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
         adapter = LinksAdapter { item ->
-            // Atualiza visual do item clicado
             val position = (0 until adapter.itemCount).firstOrNull {
                 adapter.getItem(it).link == item.link
             }
@@ -48,18 +50,24 @@ class PostSalvoFragment : Fragment() {
     }
 
     private fun fetchSalvos() {
-        // Evita iniciar uma nova busca se já houver uma rodando
         if (fetchJob?.isActive == true) return
 
+        // Usamos o lifecycleScope.launch ou viewLifecycleOwner.lifecycleScope.launch para melhor
+        // controle de ciclo de vida. Mantenho CoroutineScope para consistência, mas o cancelamento
+        // no onDestroyView é essencial.
         fetchJob = CoroutineScope(Dispatchers.IO).launch {
             try {
-                // Recupera os links salvos localmente
+                // É seguro usar requireContext() aqui, pois estamos no Dispatchers.IO
+                // e é a primeira chamada do job (Se o Fragment desanexar logo depois, o withContext no final fará a verificação).
                 val salvos = SavedPostsManager.getSavedPosts(requireContext())
 
                 if (salvos.isEmpty()) {
                     withContext(Dispatchers.Main) {
-                        adapter.setItems(emptyList())
-                        Toast.makeText(requireContext(), "Nenhum post salvo ainda", Toast.LENGTH_SHORT).show()
+                        // --- CORREÇÃO APLICADA AQUI: Adiciona a verificação isAdded ---
+                        if (isAdded) {
+                            adapter.setItems(emptyList())
+                            Toast.makeText(requireContext(), "Nenhum post salvo ainda", Toast.LENGTH_SHORT).show()
+                        }
                     }
                     return@launch
                 }
@@ -71,19 +79,25 @@ class PostSalvoFragment : Fragment() {
                 val noticiasSalvas: List<Noticia> = todasNoticias.filter { it.link in salvos }
 
                 withContext(Dispatchers.Main) {
-                    if (noticiasSalvas.isEmpty()) {
-                        Toast.makeText(requireContext(), "Nenhum post salvo encontrado", Toast.LENGTH_SHORT).show()
+                    // --- CORREÇÃO APLICADA AQUI: Adiciona a verificação isAdded ---
+                    if (isAdded) {
+                        if (noticiasSalvas.isEmpty()) {
+                            Toast.makeText(requireContext(), "Nenhum post salvo encontrado", Toast.LENGTH_SHORT).show()
+                        }
+                        adapter.setItems(noticiasSalvas)
                     }
-                    adapter.setItems(noticiasSalvas)
                 }
 
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(
-                        requireContext(),
-                        "Erro ao carregar posts salvos: ${e.localizedMessage ?: "erro desconhecido"}",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    // --- CORREÇÃO APLICADA AQUI: Adiciona a verificação isAdded ---
+                    if (isAdded) {
+                        Toast.makeText(
+                            requireContext(),
+                            "Erro ao carregar posts salvos: ${e.localizedMessage ?: "erro desconhecido"}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             }
         }
@@ -91,6 +105,8 @@ class PostSalvoFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        // ESSENCIAL: Cancela o Job quando a View é destruída para evitar vazamentos de memória
+        // e tentativas de atualizar Views inexistentes.
         fetchJob?.cancel()
     }
 }

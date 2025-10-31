@@ -205,4 +205,15 @@
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintEnd_toEndOf="parent" />
 
+  <ImageView
+      android:id="@+id/editar_img"
+      android:layout_width="71dp"
+      android:layout_height="28dp"
+      android:layout_marginTop="-30dp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.616"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/imageView"
+      app:srcCompat="@drawable/ic_editar_foto" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -43,6 +43,7 @@ class InfoPessoaisActivity : AppCompatActivity(), ChangeUsernameDialogListener {
     private lateinit var cod_empresa: TextView
     private lateinit var progressBar: ProgressBar
     private lateinit var imageView: ImageView
+    private lateinit var editar_img: ImageView
 
     private var selectedImageUri: Uri? = null
     private var cameraImageUri: Uri? = null
@@ -52,8 +53,6 @@ class InfoPessoaisActivity : AppCompatActivity(), ChangeUsernameDialogListener {
         const val PREFS_NAME = "APP_PREFS"
         const val IMAGE_URI_KEY = "USER_IMAGE_URI"
     }
-
-    // === Lançadores ===
 
     private val pickImageLauncher = registerForActivityResult(
         ActivityResultContracts.GetContent()
@@ -79,7 +78,6 @@ class InfoPessoaisActivity : AppCompatActivity(), ChangeUsernameDialogListener {
             return@registerForActivityResult
         }
 
-        // Verifica qual ação o usuário escolheu (galeria ou câmera)
         when (lastAction) {
             ActionType.GALLERY -> pickImageLauncher.launch("image/*")
             ActionType.CAMERA -> openCamera()
@@ -90,8 +88,6 @@ class InfoPessoaisActivity : AppCompatActivity(), ChangeUsernameDialogListener {
     private enum class ActionType { GALLERY, CAMERA, NONE }
     private var lastAction: ActionType = ActionType.NONE
 
-    // === onCreate ===
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -99,6 +95,7 @@ class InfoPessoaisActivity : AppCompatActivity(), ChangeUsernameDialogListener {
 
         progressBar = findViewById(R.id.progressBar)
         imageView = findViewById(R.id.imageView)
+        editar_img = findViewById(R.id.editar_img)
         nome_info = findViewById(R.id.nome_info)
         nome_completo = findViewById(R.id.nome_completo)
         email = findViewById(R.id.email)
@@ -114,16 +111,19 @@ class InfoPessoaisActivity : AppCompatActivity(), ChangeUsernameDialogListener {
         editar_nome.setOnClickListener {
             showChangeDialog("Alterar Nome Completo", nome_completo.text.toString(), "nome_completo")
         }
+
         editar_senha.setOnClickListener {
-            val senhaReal = getSharedPreferences(PREFS_NAME, MODE_PRIVATE).getString("SENHA_REAL", "") ?: ""
+            val senhaReal = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
+                .getString("SENHA_REAL", "") ?: ""
             showChangeDialog("Alterar Senha", senhaReal, "senha")
         }
+
         voltar.setOnClickListener { finish() }
 
-        // Clique na imagem
-        imageView.setOnClickListener { showImageSourceDialog() }
+        // ✅ Clique CORRETO no botão de editar IMAGEM
+        editar_img.setOnClickListener { showImageSourceDialog() }
 
-        // Carrega imagem já salva
+        // Carrega imagem salva
         getSharedPreferences(PREFS_NAME, MODE_PRIVATE).getString(IMAGE_URI_KEY, null)?.let { uriString ->
             Glide.with(this)
                 .load(uriString)
@@ -134,8 +134,6 @@ class InfoPessoaisActivity : AppCompatActivity(), ChangeUsernameDialogListener {
         val numeroCracha = intent.getIntExtra("numeroCracha", -1)
         if (numeroCracha != -1) buscarUsuario(numeroCracha)
     }
-
-    // === Escolha de origem da imagem ===
 
     private fun showImageSourceDialog() {
         val options = arrayOf("Selecionar da Galeria", "Tirar Foto")
@@ -173,13 +171,9 @@ class InfoPessoaisActivity : AppCompatActivity(), ChangeUsernameDialogListener {
                     else -> {}
                 }
             }
-            else -> {
-                requestPermissionLauncher.launch(permission)
-            }
+            else -> requestPermissionLauncher.launch(permission)
         }
     }
-
-    // === Abrir câmera ===
 
     private fun openCamera() {
         try {
@@ -196,10 +190,6 @@ class InfoPessoaisActivity : AppCompatActivity(), ChangeUsernameDialogListener {
         }
     }
 
-    // === Upload e atualização ===
-
-    // InfoPessoaisActivity.kt (Linhas 211 em diante, aproximadamente)
-
     private fun handleImageSelected(uri: Uri) {
         selectedImageUri = uri
 
@@ -214,10 +204,9 @@ class InfoPessoaisActivity : AppCompatActivity(), ChangeUsernameDialogListener {
             MediaManager.get().upload(uri)
                 .options(uploadOptions)
                 .callback(object : UploadCallback {
-                    override fun onStart(requestId: String?) {
-                        // Opcional: Mostrar uma barra de progresso ou indicador de carregamento
-                    }
+                    override fun onStart(requestId: String?) {}
                     override fun onProgress(requestId: String?, bytes: Long, totalBytes: Long) {}
+
                     override fun onSuccess(requestId: String?, resultData: MutableMap<Any?, Any?>?) {
                         val cloudUrl = resultData?.get("secure_url") as? String
                         cloudUrl?.let { url ->
@@ -225,13 +214,13 @@ class InfoPessoaisActivity : AppCompatActivity(), ChangeUsernameDialogListener {
                                 .edit()
                                 .putString(IMAGE_URI_KEY, url)
                                 .apply()
+
                             atualizarPerfil(AtualizacaoPerfil(fotoUrl = url))
                         }
                     }
 
                     override fun onError(requestId: String?, error: ErrorInfo?) {
                         Log.e(TAG, "Erro upload Cloudinary: ${error?.description}")
-
                         AlertDialog.Builder(this@InfoPessoaisActivity)
                             .setTitle("Erro no Upload")
                             .setMessage("Falha ao enviar a imagem. Detalhes: ${error?.description ?: "Erro desconhecido."}")
@@ -242,30 +231,29 @@ class InfoPessoaisActivity : AppCompatActivity(), ChangeUsernameDialogListener {
                     override fun onReschedule(requestId: String?, error: ErrorInfo?) {}
                 })
                 .dispatch()
+
         } catch (e: IllegalStateException) {
             Log.e(TAG, "Cloudinary não inicializado: ${e.message}")
-
             AlertDialog.Builder(this)
                 .setTitle("Erro de Configuração")
-                .setMessage("O serviço de imagens não foi inicializado corretamente. Por favor, reinicie o aplicativo.")
+                .setMessage("O serviço de imagens não foi inicializado corretamente. Reinicie o app.")
                 .setPositiveButton("OK", null)
                 .show()
-        } catch (e: Exception) {
-            Log.e(TAG, "Erro desconhecido durante o upload: ${e.message}", e)
 
+        } catch (e: Exception) {
+            Log.e(TAG, "Erro desconhecido: ${e.message}", e)
             AlertDialog.Builder(this)
                 .setTitle("Erro")
-                .setMessage("Ocorreu um erro inesperado ao processar a imagem. Tente novamente.")
+                .setMessage("Falha ao processar a imagem. Tente novamente.")
                 .setPositiveButton("OK", null)
                 .show()
         }
     }
 
-    // === API ===
-
     private fun buscarUsuario(cracha: Int) {
         progressBar.visibility = android.view.View.VISIBLE
         val api = RetrofitClient.getApiUsuario(this)
+
         lifecycleScope.launch {
             try {
                 val resposta = withContext(Dispatchers.IO) { api.buscarPorCracha(cracha) }
@@ -300,6 +288,7 @@ class InfoPessoaisActivity : AppCompatActivity(), ChangeUsernameDialogListener {
     private fun atualizarPerfil(atualizacao: AtualizacaoPerfil) {
         val api = RetrofitClient.getApiUsuario(this)
         val camposMap = mutableMapOf<String, Any>()
+
         atualizacao.nome?.let { camposMap["nome"] = it }
         atualizacao.sobrenome?.let { camposMap["sobrenome"] = it }
         atualizacao.email?.let { camposMap["email"] = it }
@@ -311,14 +300,14 @@ class InfoPessoaisActivity : AppCompatActivity(), ChangeUsernameDialogListener {
                 val resposta: Response<Void> = withContext(Dispatchers.IO) {
                     api.atualizarPerfil(camposMap)
                 }
-                if (!resposta.isSuccessful) Log.e(TAG, "Erro ao atualizar perfil")
+                if (!resposta.isSuccessful) {
+                    Log.e(TAG, "Erro ao atualizar perfil")
+                }
             } catch (e: Exception) {
                 Log.e(TAG, "Exceção ao atualizar perfil", e)
             }
         }
     }
-
-    // === Diálogo de edição ===
 
     private fun showChangeDialog(title: String, subtitle: String, field: String) {
         val dialog = ChangeUsernameDialogFragment()
@@ -333,12 +322,14 @@ class InfoPessoaisActivity : AppCompatActivity(), ChangeUsernameDialogListener {
 
     override fun onFieldChanged(field: String, newValue: String) {
         val partes = if (field == "nome_completo") newValue.split(" ") else emptyList()
+
         val atualizacao = AtualizacaoPerfil(
             nome = if (field == "nome_completo") partes.getOrNull(0) else null,
             sobrenome = if (field == "nome_completo") partes.drop(1).joinToString(" ") else null,
             email = if (field == "email") newValue else null,
             senha = if (field == "senha") newValue else null
         )
+
         atualizarPerfil(atualizacao)
     }
 }

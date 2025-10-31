@@ -73,7 +73,6 @@ class MainActivity : AppCompatActivity() {
             .commit()
     }
 
-    // 🔹 Método para abrir o drawer a partir de um Fragment
     fun openDrawerFromFragment() {
         drawerLayout.openDrawer(androidx.core.view.GravityCompat.END)
     }

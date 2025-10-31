@@ -5,33 +5,32 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.widget.VideoView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import com.example.calbon.databinding.ActivitySplashBinding
+import com.example.calbon.util.SessionManager
 
-class Splash : AppCompatActivity() {
+class SplashActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_splash)
 
+        val videoView = findViewById<VideoView>(R.id.splashVideoView)
 
-        lateinit var binding: ActivitySplashBinding
+        val videoUri = Uri.parse("android.resource://${packageName}/${R.raw.splash}")
+        videoView.setVideoURI(videoUri)
+        videoView.start()
 
-
-            binding = ActivitySplashBinding.inflate(layoutInflater)
-            setContentView(binding.root)
-
-            val videoUri = Uri.parse("android.resource://${packageName}/${R.raw.splash}")
-            binding.splashVideoView.setVideoURI(videoUri)
-            binding.splashVideoView.start()
-
-            Handler(Looper.getMainLooper()).postDelayed({
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-                finish()
-            }, 10000)
+        videoView.setOnCompletionListener {
+            if (SessionManager.getToken(this).isNullOrEmpty()) {
+                // Ninguém logado → vai para a tela inicial
+                startActivity(Intent(this, PrimeiraTela::class.java))
+            } else {
+                // Usuário logado → vai para a MainActivity
+                startActivity(Intent(this, MainActivity::class.java))
+            }
+            finish()
         }
-
+    }
 }
-

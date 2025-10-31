@@ -63,13 +63,13 @@
             android:name=".Login"
             android:exported="false" />
         <activity
-            android:name=".Splash"
+            android:name=".PrimeiraTela"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".PrimeiraTela"
+            android:name=".SplashActivity"
             android:exported="true"
             android:persistableMode="persistAcrossReboots">
             <intent-filter>

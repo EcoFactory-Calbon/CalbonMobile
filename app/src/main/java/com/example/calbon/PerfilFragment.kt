@@ -1,6 +1,5 @@
 package com.example.calbon
 
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -28,18 +27,21 @@ class PerfilFragment : Fragment() {
     private lateinit var imageView: ShapeableImageView
     private lateinit var nomeTextView: TextView
     private lateinit var emailTextView: TextView
-    private var numeroCracha: Int = -1
     private lateinit var progressBar: ProgressBar
 
-    // Defina as constantes usadas na InfoPessoaisActivity para garantir a consistência
+    private var numeroCracha: Int = -1
+
     companion object {
         const val TAG = "PerfilFragment"
-        const val PREFS_NAME = "APP_PREFS" // Deve ser o mesmo nome de arquivo de SharedPreferences
-        const val IMAGE_URI_KEY = "USER_IMAGE_URI" // Chave usada para salvar a URL do Cloudinary
-        const val NUMERO_CRACHA_KEY = "NUMERO_CRACHA" // Chave usada para salvar o crachá
+        const val PREFS_NAME = "APP_PREFS"
+        const val IMAGE_URI_KEY = "USER_IMAGE_URI"
+        const val NUMERO_CRACHA_KEY = "NUMERO_CRACHA"
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_perfil, container, false)
     }
 
@@ -51,34 +53,32 @@ class PerfilFragment : Fragment() {
         emailTextView = view.findViewById(R.id.emailUsuario)
         progressBar = view.findViewById(R.id.progressBar)
 
-        // 🔹 Carrega imagem de perfil salva (URL do Cloudinary)
         val prefs = requireActivity().getSharedPreferences(PREFS_NAME, AppCompatActivity.MODE_PRIVATE)
 
-        // CORREÇÃO: Usando IMAGE_URI_KEY (a chave correta)
-        val imageUrl = prefs.getString(IMAGE_URI_KEY, null)
-
-        if (imageUrl != null && imageUrl.isNotEmpty()) {
+        // ✅ Tenta carregar imagem do SharedPreferences
+        val savedImage = prefs.getString(IMAGE_URI_KEY, null)
+        if (!savedImage.isNullOrEmpty()) {
             Glide.with(this)
-                .load(imageUrl)
+                .load(savedImage)
                 .transform(CircleCrop())
                 .into(imageView)
         } else {
-            // Carrega imagem padrão (Ajuste o recurso de imagem padrão se necessário)
             imageView.setImageResource(R.drawable.ic_launcher_foreground)
         }
 
-        // 🔹 Configura o ViewPager e as abas
+        // ✅ Configuração do ViewPager + Abas
         val viewPager: ViewPager2 = view.findViewById(R.id.view_pager)
         val tabLayout: TabLayout = view.findViewById(R.id.tab_layout)
 
         viewPager.adapter = PerfilPagerAdapter(this)
+
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = if (position == 0) "Posts salvos" else "Configurações"
         }.attach()
 
-        // 🔹 Recupera número do crachá
+        // ✅ Recupera número do crachá
         numeroCracha = prefs.getInt(NUMERO_CRACHA_KEY, -1)
-        Log.d(TAG, "Número do crachá salvo: $numeroCracha")
+        Log.d(TAG, "Número do crachá carregado: $numeroCracha")
 
         if (numeroCracha != -1) {
             buscarDadosUsuario(numeroCracha)
@@ -102,27 +102,33 @@ class PerfilFragment : Fragment() {
                 if (resposta.isSuccessful) {
                     val usuarios = resposta.body()
                     if (!usuarios.isNullOrEmpty()) {
+
                         val usuario = usuarios.first()
 
-                        // Atualiza as informações de texto
-                        nomeTextView.text = "${usuario.nome} ${usuario.sobrenome}" // Assumindo que você quer nome e sobrenome
+                        nomeTextView.text = "${usuario.nome} ${usuario.sobrenome}"
                         emailTextView.text = usuario.email
 
-                        // Se a URL do usuário vier da API e for diferente da SharedPreferences, carrega a da API.
-                        // O código de cima prioriza a SharedPreferences (que tem a URL atualizada pelo usuário)
-                        // mas esta chamada aqui garante que a imagem do DB seja exibida se a SharedPreferences estiver vazia.
-                        if (usuario.fotoUrl != null) {
-                            val prefs = requireActivity().getSharedPreferences(PREFS_NAME, AppCompatActivity.MODE_PRIVATE)
-                            val currentImageUrl = prefs.getString(IMAGE_URI_KEY, null)
+                        val prefs = requireActivity().getSharedPreferences(PREFS_NAME, AppCompatActivity.MODE_PRIVATE)
+                        val savedUrl = prefs.getString(IMAGE_URI_KEY, null)
 
-                            // Se a URL da SharedPreferences estiver vazia, ou for diferente, carrega a da API
-                            if (currentImageUrl.isNullOrEmpty() || currentImageUrl != usuario.fotoUrl) {
+                        // ✅ Se o usuário tiver uma foto no banco
+                        if (!usuario.fotoUrl.isNullOrEmpty()) {
+
+                            // ✅ Se SharedPreferences estiver vazio OU divergente, atualiza e carrega
+                            if (savedUrl.isNullOrEmpty() || savedUrl != usuario.fotoUrl) {
+
                                 Glide.with(this@PerfilFragment)
                                     .load(usuario.fotoUrl)
                                     .transform(CircleCrop())
                                     .into(imageView)
+
+                                // ✅ Atualiza SharedPreferences
+                                prefs.edit()
+                                    .putString(IMAGE_URI_KEY, usuario.fotoUrl)
+                                    .apply()
                             }
                         }
+
                     } else {
                         nomeTextView.text = "Usuário não encontrado"
                         emailTextView.text = "Usuário não encontrado"
@@ -131,6 +137,7 @@ class PerfilFragment : Fragment() {
                     nomeTextView.text = "Erro ao carregar"
                     emailTextView.text = "Erro ao carregar"
                 }
+
             } catch (e: Exception) {
                 nomeTextView.text = "Erro de conexão"
                 emailTextView.text = "Erro de conexão"
