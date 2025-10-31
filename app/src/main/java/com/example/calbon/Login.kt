@@ -6,7 +6,6 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -20,13 +19,16 @@ import androidx.lifecycle.lifecycleScope
 import com.example.calbon.api.LoginRequest
 import com.example.calbon.api.RetrofitClient
 import com.example.calbon.utils.NotificationUtils
+import com.example.calbon.util.SessionManager
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class Login : AppCompatActivity() {
+
     private lateinit var progressBar: ProgressBar
+
     private fun checkNotificationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ActivityCompat.checkSelfPermission(
@@ -37,11 +39,12 @@ class Login : AppCompatActivity() {
                 ActivityCompat.requestPermissions(
                     this,
                     arrayOf(android.Manifest.permission.POST_NOTIFICATIONS),
-                    100 // código de requisição
+                    100
                 )
             }
         }
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -64,9 +67,7 @@ class Login : AppCompatActivity() {
 
         continuar.setOnClickListener {
             val emailDigitado = emailLayout.editText?.text.toString().trim()
-            val senhaDigitado = senhaLayout.editText?.text.toString().trim() ?: ""
-
-
+            val senhaDigitado = senhaLayout.editText?.text.toString().trim()
 
             emailLayout.error = null
             senhaLayout.error = null
@@ -83,7 +84,6 @@ class Login : AppCompatActivity() {
             continuar.isEnabled = false
             progressBar.visibility = View.VISIBLE
 
-
             lifecycleScope.launch {
                 try {
                     val loginRequest = LoginRequest(emailDigitado, senhaDigitado)
@@ -96,13 +96,12 @@ class Login : AppCompatActivity() {
                         if (response.isSuccessful && response.body() != null) {
                             val funcionario = response.body()!!
 
-                            // Salva token e crachá em SharedPreferences
-                            val prefs = getSharedPreferences("APP_PREFS", MODE_PRIVATE)
-                            prefs.edit()
-                                .putString("TOKEN", funcionario.token)
-                                .putInt("NUMERO_CRACHA", funcionario.numeroCracha)
-                                .putString("SENHA_REAL", senhaDigitado)
-                                .apply()
+                            // Salva token e número do crachá no SessionManager
+                            SessionManager.saveSession(
+                                this@Login,
+                                funcionario.token,
+                                funcionario.numeroCracha
+                            )
 
                             Toast.makeText(
                                 this@Login,
@@ -110,6 +109,7 @@ class Login : AppCompatActivity() {
                                 Toast.LENGTH_LONG
                             ).show()
 
+                            // Envia notificação
                             NotificationUtils.sendNotification(
                                 this@Login,
                                 funcionario.numeroCracha,
@@ -117,19 +117,20 @@ class Login : AppCompatActivity() {
                                 "Bem-vindo ao Calbon, ${funcionario.nome}!"
                             )
 
-
-
                             // Vai para MainActivity
                             val intent = Intent(this@Login, MainActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                            startActivity(intent)                        } else if (response.code() == 401) {
+                            startActivity(intent)
+
+                        } else if (response.code() == 401) {
                             senhaLayout.error = "Email ou senha incorretos"
                         } else {
                             senhaLayout.error = "Erro ao validar funcionário na API"
                         }
 
-                        Log.d("API_LOGIN", "Código: ${response.code()}")
-                        Log.d("API_LOGIN", "Corpo: ${response.errorBody()?.string()}")
+                        // Logs para debug
+                        android.util.Log.d("API_LOGIN", "Código: ${response.code()}")
+                        android.util.Log.d("API_LOGIN", "Corpo: ${response.errorBody()?.string()}")
                     }
 
                 } catch (e: Exception) {
@@ -145,6 +146,7 @@ class Login : AppCompatActivity() {
         primeiroAcesso.setOnClickListener {
             startActivity(Intent(this, Primeiro_acesso::class.java))
         }
+
         redefinirSenha.setOnClickListener {
             startActivity(Intent(this, Redefinir_senha::class.java))
         }

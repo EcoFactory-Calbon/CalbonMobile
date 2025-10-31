@@ -1,5 +1,6 @@
 package com.example.calbon
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,8 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.example.calbon.util.SessionManager
 
 class ConfiguracaoFragment : Fragment() {
 
@@ -24,9 +25,8 @@ class ConfiguracaoFragment : Fragment() {
         val infoPerfilButton = view.findViewById<Button>(R.id.infoPerfil)
         val sairButton = view.findViewById<Button>(R.id.sair)
 
-        // Acessa SharedPreferences para pegar o número do crachá
-        val prefs = requireActivity().getSharedPreferences("APP_PREFS", AppCompatActivity.MODE_PRIVATE)
-        numeroCracha = prefs.getInt("NUMERO_CRACHA", -1)
+        // Pega o número do crachá diretamente do SessionManager
+        numeroCracha = SessionManager.getNumeroCracha(requireContext())
 
         // Botão de notificações
         notificacao.setOnClickListener {
@@ -47,8 +47,10 @@ class ConfiguracaoFragment : Fragment() {
                 .setTitle("Sair da conta")
                 .setMessage("Tem certeza que deseja sair?")
                 .setPositiveButton("Sim") { _, _ ->
-                    prefs.edit().clear().apply()
+                    // Limpa sessão usando SessionManager
+                    SessionManager.logout(requireContext())
 
+                    // Redireciona para a PrimeiraTela (login ou tela inicial)
                     val intent = Intent(activity, PrimeiraTela::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
