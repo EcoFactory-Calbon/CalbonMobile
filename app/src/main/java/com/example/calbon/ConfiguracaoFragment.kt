@@ -26,7 +26,7 @@ class ConfiguracaoFragment : Fragment() {
         val sairButton = view.findViewById<Button>(R.id.sair)
 
         // Pega o número do crachá diretamente do SessionManager
-        numeroCracha = SessionManager.getNumeroCracha(requireContext())
+        numeroCracha = SessionManager.getNumeroCracha(requireContext())?.toInt() ?: -1
 
         // Botão de notificações
         notificacao.setOnClickListener {

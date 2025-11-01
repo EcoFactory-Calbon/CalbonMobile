@@ -1,5 +1,6 @@
 package com.example.calbon.retrofit
 
+import com.example.calbon.api.ApiFormulario
 import com.example.calbon.api.ApiPerguntas
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -18,6 +19,16 @@ object RetrofitMongoClient {
             .build()
 
         retrofit.create(ApiPerguntas::class.java)
+    }
+
+    val instanceFormulario: ApiFormulario by lazy {
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        retrofit.create(ApiFormulario::class.java)
     }
 
 }

@@ -22,10 +22,15 @@ object SessionManager {
         return prefs.getString(KEY_TOKEN, null)
     }
 
-    fun getNumeroCracha(context: Context): Int {
-        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        return prefs.getInt(KEY_CRACHA, -1)
+    fun getNumeroCracha(context: Context): Int? {
+        val prefs = context.getSharedPreferences("APP_PREFS", Context.MODE_PRIVATE)
+
+        val cracha = prefs.getInt("NUMERO_CRACHA", -1)
+
+        return if (cracha != -1) cracha else null
     }
+
+
 
     fun logout(context: Context) {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)

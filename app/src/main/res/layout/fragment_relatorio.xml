@@ -5,234 +5,136 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    tools:context=".RelatorioFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp">
 
-        <!-- KPI Principal -->
-
-        <!-- KPIs Secundários -->
-
-        <View
-            android:id="@+id/view"
-            android:layout_width="428dp"
-            android:layout_height="2dp"
-            android:layout_marginTop="72dp"
-            android:background="#5FBCDB"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.51"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <TextView
-            android:id="@+id/titulo"
+            android:id="@+id/titulo_relatorio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:text="Relatório"
-            android:textColor="?android:attr/textColorSecondary"
-            android:textSize="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-        <LinearLayout
-            android:id="@+id/kpi_principal"
+        <View
+            android:id="@+id/linha_titulo_principal"
             android:layout_width="0dp"
-            android:layout_height="80dp"
-            android:layout_marginTop="44dp"
-            android:background="@drawable/rounded_purple_bar_bg"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="12dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            android:layout_height="3dp"
+            android:layout_marginTop="4dp"
+            android:background="@color/teal_200"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/titulo">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2,3K"
-                android:textColor="@android:color/white"
-                android:textSize="28sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Usuários Ativos"
-                android:textColor="@android:color/white"
-                android:textSize="14sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/kpi_secundarios"
-            android:layout_width="0dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="20dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:weightSum="2"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/kpi_principal">
+            app:layout_constraintTop_toBottomOf="@id/titulo_relatorio"/>
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="8dp"
-                android:layout_weight="1"
-                android:background="@drawable/rounded_purple_bar_bg"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1,2K"
-                    android:textColor="@android:color/white"
-                    android:textSize="22sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Novos Cadastros"
-                    android:textColor="@android:color/white"
-                    android:textSize="13sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="8dp"
-                android:layout_weight="1"
-                android:background="@drawable/rounded_purple_bar_bg"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="870"
-                    android:textColor="@android:color/white"
-                    android:textSize="22sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Acessos Hoje"
-                    android:textColor="@android:color/white"
-                    android:textSize="13sp" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <!-- Gráficos de Rosca -->
-        <LinearLayout
-            android:id="@+id/graficos_pizza"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/kpi_bloco"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:weightSum="3"
-            app:layout_constraintTop_toBottomOf="@id/kpi_secundarios"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="24dp"
+            android:background="#2C2C44"
+            android:padding="16dp"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginBottom="24dp">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/linha_titulo_principal">
 
-            <LinearLayout
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/kpi_label_nivel"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_marginEnd="8dp">
+                android:text="Nível de Emissão"
+                android:textColor="#CCCCCC"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <com.github.mikephil.charting.charts.PieChart
-                    android:id="@+id/pieChart1"
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Aumento Lorem"
-                    android:textColor="#B794F6"
-                    android:textSize="12sp"
-                    android:layout_marginTop="8dp"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/kpi_valor"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_marginHorizontal="4dp">
+                android:textColor="@color/white"
+                android:textSize="42sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/kpi_label_nivel"
+                tools:text="3.4" />
 
-                <com.github.mikephil.charting.charts.PieChart
-                    android:id="@+id/pieChart2"
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Eletrodomésticos"
-                    android:textColor="#B794F6"
-                    android:textSize="12sp"
-                    android:layout_marginTop="8dp"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/kpi_unidade"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_marginStart="8dp">
+                android:layout_marginStart="8dp"
+                android:paddingBottom="4dp"
+                android:text="tCO2e"
+                android:textColor="#CCCCCC"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@id/kpi_valor"
+                app:layout_constraintStart_toEndOf="@id/kpi_valor" />
 
-                <com.github.mikephil.charting.charts.PieChart
-                    android:id="@+id/pieChart3"
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"/>
+            <TextView
+                android:id="@+id/kpi_classificacao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#FFC107"
+                android:paddingLeft="12dp"
+                android:paddingTop="4dp"
+                android:paddingRight="12dp"
+                android:paddingBottom="4dp"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Médio" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Meios de Transporte"
-                    android:textColor="#B794F6"
-                    android:textSize="12sp"
-                    android:layout_marginTop="8dp"/>
-            </LinearLayout>
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!-- Gráfico de Linha -->
+        <TextView
+            android:id="@+id/categorias_titulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Contribuição por Categoria"
+            android:textColor="#CCCCCC"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/kpi_bloco" />
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/barChartCategorias"
+            android:layout_width="0dp"
+            android:layout_height="220dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/categorias_titulo" />
+
         <TextView
             android:id="@+id/linha_titulo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
             android:text="Evolução Últimos Meses"
             android:textColor="#CCCCCC"
             android:textSize="14sp"
-            app:layout_constraintTop_toBottomOf="@id/graficos_pizza"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginBottom="8dp"/>
+            app:layout_constraintTop_toBottomOf="@id/barChartCategorias" />
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/lineChart"
             android:layout_width="0dp"
-            android:layout_height="250dp"
-            app:layout_constraintTop_toBottomOf="@id/linha_titulo"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_height="260dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginBottom="32dp"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/linha_titulo" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

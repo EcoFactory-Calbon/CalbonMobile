@@ -5,14 +5,14 @@ import com.google.gson.annotations.SerializedName
 data class ResultadoRecebido(
     @SerializedName("_id")
     val id: String,
-    @SerializedName("numero_cracha")
-    val numeroCracha: Int,
-    @SerializedName("data_resposta")
+    @SerializedName("numeroCracha")
+    val numeroCracha: String,
+    @SerializedName("dataResposta")
     val dataResposta: String,
-    @SerializedName("nivel_emissao")
-    val nivelEmissao: Double, // Ou Float, dependendo da precisão
-    @SerializedName("classificacao_emissao")
+    @SerializedName("nivelEmissao")
+    val nivelEmissao: Double,
+    @SerializedName("classificacaoEmissao")
     val classificacaoEmissao: String,
     @SerializedName("respostas")
-    val respostas: List<RespostaEnvio>
+    val respostas: List<RespostaItemEnvio>
 )

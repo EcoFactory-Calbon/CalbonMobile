@@ -41,6 +41,7 @@ class MainActivity : AppCompatActivity() {
         bottomNavigation.setOnItemSelectedListener { item ->
             val fragment: Fragment = when (item.itemId) {
                 R.id.home -> HomeFragment()
+                // ⭐ Simplificado: Chama o Fragment diretamente, ele se vira com o crachá
                 R.id.relatorio -> RelatorioFragment()
                 R.id.formulario -> FormularioFragment()
                 R.id.perfil -> PerfilFragment()
@@ -53,15 +54,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupDrawerMenu() {
         navView.setNavigationItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.nav_home -> replaceFragment(HomeFragment())
-                R.id.nav_dashboard -> replaceFragment(RelatorioFragment())
-                R.id.nav_form -> replaceFragment(FormularioFragment())
-                R.id.nav_profile -> replaceFragment(PerfilFragment())
-                R.id.nav_terms -> {} // implementar
-                R.id.nav_help -> {} // implementar
-                R.id.nav_settings -> replaceFragment(ConfiguracaoFragment())
+            val fragment: Fragment = when (menuItem.itemId) {
+                R.id.nav_home -> HomeFragment()
+                R.id.nav_dashboard -> RelatorioFragment()
+                R.id.nav_form -> FormularioFragment()
+                R.id.nav_profile -> PerfilFragment()
+                R.id.nav_settings -> ConfiguracaoFragment()
+                else -> HomeFragment()
             }
+
+            replaceFragment(fragment)
             drawerLayout.closeDrawer(androidx.core.view.GravityCompat.END)
             true
         }
